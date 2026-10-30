@@ -8,8 +8,6 @@ npm-debug.log*
 # Eval run output (commit selected reports by hand if needed).
 eval/results/
 
-# Local source material used while merging; not redistributed.
-extras/
 
 # Tooling state
 .omc/
