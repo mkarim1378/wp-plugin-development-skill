@@ -21,8 +21,24 @@ require_once ${{prefix}}_tests_dir . '/includes/functions.php';
 tests_add_filter(
 	'muplugins_loaded',
 	static function () {
+{{#woocommerce}}
+		require WP_PLUGIN_DIR . '/woocommerce/woocommerce.php';
+{{/woocommerce}}
+{{#elementor}}
+		require WP_PLUGIN_DIR . '/elementor/elementor.php';
+{{/elementor}}
 		require dirname( __DIR__ ) . '/{{slug}}.php';
 	}
 );
+{{#woocommerce}}
+
+tests_add_filter(
+	'setup_theme',
+	static function () {
+		WC_Install::install();
+		update_option( 'woocommerce_custom_orders_table_enabled', 'yes' );
+	}
+);
+{{/woocommerce}}
 
 require ${{prefix}}_tests_dir . '/includes/bootstrap.php';

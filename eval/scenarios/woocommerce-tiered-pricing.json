@@ -1,0 +1,19 @@
+{
+  "name": "Implement quantity-based tiered pricing",
+  "skills": [
+    "wp-woocommerce-extension"
+  ],
+  "query": "Add tiered pricing: 5+ items get 10% off, 10+ items get 20% off, per product. It must work in the Cart block too.",
+  "expected_behavior": [
+    "Step 1: Load references/products-and-pricing.md",
+    "Step 2: Store tiers via product data fields saved through woocommerce_admin_process_product_object",
+    "Step 3: Set prices in woocommerce_before_calculate_totals from the original product price (idempotent)",
+    "Step 4: Round with wc_get_price_decimals()",
+    "Step 5: Expose savings to the Cart block via Store API endpoint data instead of HTML filters"
+  ],
+  "success_criteria": [
+    "Recalculating the cart twice does not compound the discount",
+    "Works with the Cart/Checkout blocks and the classic cart",
+    "Prices displayed respect tax settings"
+  ]
+}

@@ -487,6 +487,29 @@ function checkCalls(text, rel, report) {
   }
 }
 
+const WOOCOMMERCE_USAGE = /\bwc_get_orders?\s*\(|\bWC_Order\b|\bWC\(\)|\bWC_Payment_Gateway\b|['"]woocommerce_[a-z_]+['"]|\bwc_get_product\s*\(/;
+
+// WooCommerce-specific rules; only meaningful for plugins that use WooCommerce (see main()).
+function checkWooCommerce(text, rel, report, wooFacts) {
+  if (WOOCOMMERCE_USAGE.test(text)) wooFacts.uses = true;
+  if (/declare_compatibility\s*\(\s*['"]custom_order_tables['"]/.test(text)) wooFacts.declaresHpos = true;
+
+  const lines = text.split(/\r?\n/);
+  lines.forEach((line, idx) => {
+    if (isCommentLine(line)) return;
+    const n = idx + 1;
+    if (/\b(get|update|add|delete)_post_meta\s*\(\s*\$\w*order\w*/i.test(line)) {
+      report.add({ id: "wc-order-post-meta", severity: "warning", file: rel, line: n, message: "Post meta API used on an order; with HPOS use $order->get_meta()/update_meta_data() + save()." }, line);
+    }
+    if (/['"]post_type['"]\s*=>\s*['"]shop_order['"]/.test(line)) {
+      report.add({ id: "wc-order-post-query", severity: "warning", file: rel, line: n, message: "Orders queried as posts (post_type shop_order); use wc_get_orders() so HPOS stores work." }, line);
+    }
+    if (/shop_order/.test(line) && /\$wpdb->(posts|postmeta)|wp_post(s|meta)\b/.test(line)) {
+      report.add({ id: "wc-order-posts-sql", severity: "warning", file: rel, line: n, message: "SQL on wp_posts/wp_postmeta for orders; HPOS stores orders in wc_orders tables." }, line);
+    }
+  });
+}
+
 function checkLines(text, rel, report, fileFacts) {
   const lines = text.split(/\r?\n/);
   const superglobal = /\$_(POST|GET|REQUEST|COOKIE|FILES)\b|\$_SERVER\s*\[/;
@@ -609,6 +632,7 @@ function main() {
   const domainCounts = {};
   let hasUninstallFile = false;
   let registersUninstall = false;
+  const wooFacts = { uses: false, declaresHpos: false };
 
   for (const file of phpFiles) {
     const text = readFileSafe(file);
@@ -635,6 +659,7 @@ function main() {
     checkLines(text, rel, reporter, facts);
     checkTextDomains(text, rel, expectedDomain, reporter, domainCounts);
     checkCalls(text, rel, reporter);
+    checkWooCommerce(text, rel, reporter, wooFacts);
 
     if (facts.registersLifecycle && !isMain) {
       reporter.add({ id: "lifecycle-hook-outside-main", severity: "info", file: rel, line: 1, message: "Activation/deactivation hook registered outside the main file; make sure it passes the main file path, not __FILE__ of this file." });
@@ -642,6 +667,16 @@ function main() {
     if (facts.registersUninstall) registersUninstall = true;
     if (facts.readsInput && !facts.verifiesNonce) {
       reporter.add({ id: "csrf-no-nonce-check", severity: "warning", file: rel, line: 1, message: "Reads POST/REQUEST/FILES data but no nonce verification appears in this file." });
+    }
+  }
+
+  if (mainFile && wooFacts.uses) {
+    const mainRel = toPosix(path.relative(pluginDir, mainFile.file));
+    if (!wooFacts.declaresHpos) {
+      reporter.add({ id: "wc-missing-hpos-declaration", severity: "warning", file: mainRel, line: 1, message: "Uses WooCommerce but never declares HPOS (custom_order_tables) compatibility on before_woocommerce_init." });
+    }
+    if (!/(^|,\s*)woocommerce(\s*,|$)/.test(mainFile.header.requiresPlugins || "")) {
+      reporter.add({ id: "wc-missing-requires-plugins", severity: "info", file: mainRel, line: 1, message: 'Uses WooCommerce but the header has no "Requires Plugins: woocommerce".' });
     }
   }
 

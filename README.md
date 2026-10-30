@@ -11,6 +11,7 @@ Targets **WordPress 7.0+ / PHP 7.4+**, with notes on WordPress 7.1 changes.
 | Skill | Purpose |
 | --- | --- |
 | **wp-plugin-development** | Hub: headers/bootstrap, architecture and prefixing, hooks, lifecycle and upgrade routines, admin UI, Settings API, assets and script modules, CPTs/meta, options/transients/custom tables/cron, HTTP API, i18n/RTL, multisite, privacy, security, WP 7.x features (AI Client, PHP-only blocks, DataViews, iframed editor), WP-CLI commands, testing, release packaging |
+| **wp-woocommerce-extension** | WooCommerce: HPOS/order CRUD, products and tiered pricing, Cart/Checkout blocks, payment gateways, settings/emails, Action Scheduler, REST, testing |
 | wp-project-triage | Deterministic repo inspection (project kind, tooling, versions) |
 | wordpress-router | Classifies a repo and routes to the right skill |
 | wp-rest-api | REST routes, controllers, schema, permissions |
@@ -23,7 +24,7 @@ Targets **WordPress 7.0+ / PHP 7.4+**, with notes on WordPress 7.1 changes.
 | wp-performance | Profiling, autoload bloat, caching |
 | wp-wpcli-and-ops | Operating sites with WP-CLI |
 
-Everything except `wp-plugin-development` is kept as close to upstream as possible; see [UPSTREAM.md](UPSTREAM.md) for the pinned commit and every local change.
+Everything except the locally developed skills (`wp-plugin-development`, `wp-woocommerce-extension`, and later additions marked in bold) is kept as close to upstream as possible; see [UPSTREAM.md](UPSTREAM.md) for the pinned commit and every local change.
 
 ### Hub skill layout
 

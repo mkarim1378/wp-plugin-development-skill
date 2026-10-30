@@ -9,7 +9,7 @@ import { fileURLToPath } from "node:url";
 //        [--author "Acme"] [--author-uri URL] [--plugin-uri URL] [--contributors wporg-user]
 //        [--tags "a, b"] [--composer-vendor acme] [--version 0.1.0]
 //        [--wp-min 7.0] [--php-min 7.4] [--tested 7.1]
-//        [--woocommerce] [--commercial [--update-uri URL]] [--elementor]
+//        [--woocommerce [--wc-min 10.0] [--wc-tested 11.2]] [--commercial [--update-uri URL]] [--elementor]
 //        [--dry-run]
 //
 // Template syntax: {{key}} values, {{#key}}...{{/key}} when truthy, {{^key}}...{{/key}} when falsy.
@@ -101,6 +101,8 @@ function buildContext(opts) {
     php_min: opts["php-min"] ?? "7.4",
     tested: opts.tested ?? "7.1",
     requires_plugins: requiresPlugins,
+    wc_min: opts["wc-min"] ?? "10.0",
+    wc_tested: opts["wc-tested"] ?? "11.2",
     update_uri: features.commercial ? opts["update-uri"] ?? `https://updates.example.com/${slug}` : "",
     external_services: features.commercial,
     ...features,

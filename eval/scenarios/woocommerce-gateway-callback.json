@@ -1,0 +1,20 @@
+{
+  "name": "Harden a payment gateway callback",
+  "skills": [
+    "wp-woocommerce-extension",
+    "wp-plugin-development"
+  ],
+  "query": "Review our gateway's return/callback handler; we had an order marked paid without payment.",
+  "expected_behavior": [
+    "Step 1: Load references/payment-gateways.md",
+    "Step 2: Verify the payment server-to-server instead of trusting query parameters",
+    "Step 3: Compare verified amount/currency/reference with the order",
+    "Step 4: Make completion idempotent (is_paid / stored transaction ID) and handle concurrent callbacks",
+    "Step 5: Handle user returning without paying and payments for cancelled orders"
+  ],
+  "success_criteria": [
+    "Forged callback parameters cannot mark an order paid",
+    "Repeated callbacks complete the order once",
+    "Secrets are not logged"
+  ]
+}

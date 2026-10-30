@@ -19,12 +19,12 @@ Reused by every later phase.
 
 New skill `skills/wp-woocommerce-extension/`.
 
-- [ ] SKILL.md hub with routing to references; compatibility contract matches the repo (WP 7.0+, PHP 7.4+) plus target WooCommerce version.
-- [ ] References: HPOS and order CRUD (`FeaturesUtil::declare_compatibility()`, `wc_get_orders()`, no post APIs on orders), products and data stores, cart/price hooks (tiered/dynamic pricing pitfalls), Cart/Checkout Blocks integration (payment method registration, Store API, checkout fields), payment gateways (`WC_Payment_Gateway`, refunds, webhooks/callbacks, idempotency), emails, settings tabs, Action Scheduler, `WC_Logger`, WooCommerce REST API, testing with WooCommerce in wp-env.
-- [ ] `check_plugin_basics` WooCommerce rules (post meta APIs on orders, missing HPOS declaration, missing `Requires Plugins: woocommerce`).
-- [ ] Scaffold option `--woocommerce` (HPOS + Blocks declarations, WooCommerce dependency checks).
-- [ ] Hub routing table and router decision tree point WooCommerce work here.
-- [ ] Eval scenarios: HPOS migration, tiered pricing, Blocks-compatible gateway, order import.
+- [x] SKILL.md hub with routing to references; compatibility contract matches the repo (WP 7.0+, PHP 7.4+) plus target WooCommerce version.
+- [x] References: HPOS and order CRUD (`FeaturesUtil::declare_compatibility()`, `wc_get_orders()`, no post APIs on orders), products and data stores, cart/price hooks (tiered/dynamic pricing pitfalls), Cart/Checkout Blocks integration (payment method registration, Store API, checkout fields), payment gateways (`WC_Payment_Gateway`, refunds, webhooks/callbacks, idempotency), emails, settings tabs, Action Scheduler, `WC_Logger`, WooCommerce REST API, testing with WooCommerce in wp-env.
+- [x] `check_plugin_basics` WooCommerce rules (post meta APIs on orders, missing HPOS declaration, missing `Requires Plugins: woocommerce`).
+- [x] Scaffold option `--woocommerce` (HPOS + Blocks declarations, WooCommerce dependency checks).
+- [x] Hub routing table and router decision tree point WooCommerce work here.
+- [x] Eval scenarios: HPOS migration, tiered pricing, Blocks-compatible gateway, order import.
 
 ## Phase 3 — Persian localization and Iranian market
 

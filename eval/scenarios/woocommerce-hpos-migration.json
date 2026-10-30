@@ -1,0 +1,21 @@
+{
+  "name": "Make an order plugin HPOS compatible",
+  "skills": [
+    "wp-woocommerce-extension",
+    "wp-plugin-development"
+  ],
+  "query": "WooCommerce says our plugin is incompatible with High-Performance Order Storage. Fix it.",
+  "expected_behavior": [
+    "Step 1: Run check_plugin_basics to find wc-order-* findings",
+    "Step 2: Load references/hpos-and-orders.md",
+    "Step 3: Replace post meta/WP_Query/SQL on orders with wc_get_order(), wc_get_orders(), and order CRUD + save()",
+    "Step 4: Add HPOS column and meta box hooks alongside the legacy ones",
+    "Step 5: Declare custom_order_tables compatibility on before_woocommerce_init",
+    "Step 6: Test with HPOS on and off"
+  ],
+  "success_criteria": [
+    "No post APIs or wp_posts SQL remain for orders",
+    "Compatibility declared only after the code is fixed",
+    "Admin columns/meta boxes work on both order screens"
+  ]
+}

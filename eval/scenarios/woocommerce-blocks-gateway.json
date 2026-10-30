@@ -1,0 +1,19 @@
+{
+  "name": "Make a redirect gateway work in the Checkout block",
+  "skills": [
+    "wp-woocommerce-extension"
+  ],
+  "query": "Our payment gateway shows up in the old checkout but not in the new Checkout block.",
+  "expected_behavior": [
+    "Step 1: Load references/blocks-checkout.md (payment method integration)",
+    "Step 2: Add an AbstractPaymentMethodType subclass whose name equals the gateway ID",
+    "Step 3: Register it on woocommerce_blocks_payment_method_type_registration",
+    "Step 4: Add a JS registerPaymentMethod() built with the WooCommerce dependency extraction plugin",
+    "Step 5: Declare cart_checkout_blocks compatibility"
+  ],
+  "success_criteria": [
+    "Gateway appears and completes payment in the Checkout block",
+    "process_payment() is reused, not duplicated",
+    "No @woocommerce/* packages bundled from npm"
+  ]
+}

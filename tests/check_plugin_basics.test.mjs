@@ -90,6 +90,18 @@ test("--format sarif emits SARIF 2.1.0 with prefixed URIs", () => {
   assert.ok(ruleIds.includes("rest-missing-permission-callback"));
 });
 
+test("WooCommerce rules: post APIs on orders, HPOS declaration, Requires Plugins", () => {
+  const { report } = run(fixture("woo-plugin"));
+  assert.deepEqual(ids(report).sort(), [
+    "wc-missing-hpos-declaration@woo-plugin.php:1",
+    "wc-missing-requires-plugins@woo-plugin.php:1",
+    "wc-order-post-meta@woo-plugin.php:15",
+    "wc-order-post-meta@woo-plugin.php:16",
+    "wc-order-post-query@woo-plugin.php:21",
+    "wc-order-posts-sql@woo-plugin.php:22",
+  ]);
+});
+
 test("non-directory argument exits with 2", () => {
   assert.equal(run(path.join(here, "does-not-exist")).status, 2);
 });

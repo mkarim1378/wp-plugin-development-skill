@@ -12,7 +12,7 @@ import { fileURLToPath } from "node:url";
 // Files are compared by git blob hash after normalizing line endings to LF.
 
 const UPSTREAM_REPO = "WordPress/agent-skills";
-const LOCALLY_DEVELOPED = new Set(["wp-plugin-development"]);
+const LOCALLY_DEVELOPED = new Set(["wp-plugin-development", "wp-woocommerce-extension", "wp-persian-localization", "wp-elementor-addon"]);
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 

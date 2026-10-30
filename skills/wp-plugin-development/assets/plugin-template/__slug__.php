@@ -15,6 +15,10 @@
 {{#requires_plugins}}
  * Requires Plugins:  {{requires_plugins}}
 {{/requires_plugins}}
+{{#woocommerce}}
+ * WC requires at least: {{wc_min}}
+ * WC tested up to:   {{wc_tested}}
+{{/woocommerce}}
 {{#update_uri}}
  * Update URI:        {{update_uri}}
 {{/update_uri}}
