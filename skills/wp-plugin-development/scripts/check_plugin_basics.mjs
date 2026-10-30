@@ -432,6 +432,12 @@ function checkLines(text, rel, report, fileFacts) {
     if (/\bcurl_init\s*\(|file_get_contents\s*\(\s*['"]https?:/.test(line)) {
       report.add({ id: "http-not-wp-api", severity: "warning", file: rel, line: n, message: "Remote request without the WordPress HTTP API (wp_remote_*)." }, line);
     }
+    if (/\bsession_start\s*\(/.test(line)) {
+      report.add({ id: "cache-session-start", severity: "warning", file: rel, line: n, message: "session_start() disables page caching and conflicts with many hosts; use user meta, transients, or WooCommerce sessions." }, line);
+    }
+    if (/\bsetcookie\s*\(/.test(line)) {
+      report.add({ id: "cache-setcookie", severity: "info", file: rel, line: n, message: "setcookie(): only set cookies on explicit user actions; a Set-Cookie on normal page views disables page caching." }, line);
+    }
     if (/\bwp_redirect\s*\(/.test(line)) {
       report.add({ id: "redirect-unsafe", severity: "info", file: rel, line: n, message: "wp_redirect() allows any host; use wp_safe_redirect() for user-influenced targets." }, line);
     }

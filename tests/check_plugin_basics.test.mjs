@@ -44,6 +44,8 @@ test("bad plugin reports the expected problems", () => {
     "dangerous-function@includes/helper.php:3",
     "trailing-whitespace-after-close-tag@includes/helper.php:4",
     "uninstall-missing@.:0",
+    "cache-session-start@bad-plugin.php:24",
+    "cache-setcookie@bad-plugin.php:25",
   ];
   for (const id of expected) assert.ok(found.includes(id), `missing ${id}`);
 

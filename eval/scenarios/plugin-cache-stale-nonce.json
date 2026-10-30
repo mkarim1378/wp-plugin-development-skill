@@ -1,0 +1,20 @@
+{
+  "name": "Form breaks on cached pages",
+  "skills": [
+    "wp-plugin-development"
+  ],
+  "query": "Our frontend review form works for us but visitors report 'Security check failed' after a few hours. The site uses LiteSpeed Cache.",
+  "expected_behavior": [
+    "Step 1: Load references/caching-compatibility.md",
+    "Step 2: Identify the nonce printed into cached HTML for logged-out visitors as the cause",
+    "Step 3: Fetch the nonce (or the whole form state) via an uncached REST/AJAX request after load, or rely on validation + rate limiting for anonymous submissions",
+    "Step 4: Do not disable caching site-wide",
+    "Step 5: Test logged out with the cache enabled and a short nonce_life"
+  ],
+  "success_criteria": [
+    "Root cause explained (stale cached nonce)",
+    "Fix keeps the page cacheable",
+    "Anonymous submissions still validated and rate-limited",
+    "No DONOTCACHEPAGE on every page"
+  ]
+}

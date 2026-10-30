@@ -1,0 +1,18 @@
+{
+  "name": "Plugin data not updating on cached pages",
+  "skills": [
+    "wp-plugin-development"
+  ],
+  "query": "We store ratings in a custom table and show them on product pages, but visitors see old ratings until the cache expires.",
+  "expected_behavior": [
+    "Step 1: Load references/caching-compatibility.md",
+    "Step 2: Purge the affected post when a rating changes (clean_post_cache plus guarded cache-plugin APIs)",
+    "Step 3: Expose a plugin action so hosts/CDNs can hook in",
+    "Step 4: Prefer narrow purges or LiteSpeed tags over purge-all"
+  ],
+  "success_criteria": [
+    "Purge only the affected posts",
+    "Third-party functions guarded with function_exists()/do_action",
+    "Works without any cache plugin installed"
+  ]
+}

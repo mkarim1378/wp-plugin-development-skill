@@ -31,6 +31,7 @@ Custom tables are justified when you need indexed queries over many rows that me
 - With a persistent object cache, transients live in the cache, not the options table.
 - `wp_cache_get()` / `wp_cache_set()` with a plugin-specific group are request-scoped without a persistent cache; use them for repeated work inside one request.
 - Use `set_site_transient()` for network-wide data on multisite.
+- Page caches, purging, and object-cache groups: see `caching-compatibility.md`.
 
 ## Custom tables
 

@@ -8,6 +8,7 @@ Use this file when making security fixes or when handling any input/output. To r
 - Always pair nonces with capability checks (`current_user_can()` or a more specific capability).
 - Nonces are tied to the user session and an action string; use a specific, prefixed action (`acme_reviews_delete_{$id}`), not one shared nonce for everything.
 - Nonces are valid for up to 24 hours and can be reused within that window; they don't prevent replay of idempotent requests.
+- Nonces printed into cached pages go stale (see `caching-compatibility.md`).
 - For logged-out visitors, nonces are shared by everyone and are not a security control. Protect public forms with validation, rate limiting, and capability-free logic that is safe for anyone to trigger.
 
 ```php

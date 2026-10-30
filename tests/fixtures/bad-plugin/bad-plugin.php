@@ -21,3 +21,5 @@ wp_redirect( $to );
 register_rest_route( 'x/v1', '/y', array( 'permission_callback' => '__return_true' ) );
 $q = sanitize_text_field( wp_unslash( $_GET['q'] ?? '' ) ); // fine
 echo $raw; // phpcs:ignore WordPress.Security.EscapeOutput
+session_start();
+setcookie( "bad_plugin_seen", "1" );

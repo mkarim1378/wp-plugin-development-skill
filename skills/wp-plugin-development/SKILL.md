@@ -55,6 +55,7 @@ Load the matching reference (one hop from this file) or hand off to the sibling 
 | Custom post types, taxonomies, post/term/user meta | `references/content-types-and-meta.md` |
 | Options, transients, custom tables, cron | `references/data-and-cron.md` |
 | Calling external services (HTTP API) | `references/http-api.md` |
+| Page caches, CDNs, object cache: nonces on cached pages, user-specific output, purging | `references/caching-compatibility.md` |
 | Translations and text domains | `references/i18n.md` |
 | Multisite and network activation | `references/multisite.md` |
 | Personal data export/erase, privacy policy text | `references/privacy.md` |
@@ -97,6 +98,7 @@ Apply these to every change, whatever the task:
 - SQL goes through `$wpdb->prepare()` (`%d`, `%f`, `%s`, `%i` for identifiers); `LIKE` values go through `$wpdb->esc_like()`.
 - All user-facing strings are translatable with the plugin's text domain, and never translated before `init`.
 - Don't call external services, send telemetry, or load remote assets without user consent and a documented purpose.
+- Assume the frontend is behind a page cache: no user-specific output or logged-out nonces in cacheable HTML, no cookies or sessions on plain page views.
 
 ### 3) Implement
 
