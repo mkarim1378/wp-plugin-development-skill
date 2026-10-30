@@ -1,0 +1,13 @@
+.DS_Store
+node_modules/
+dist/
+npm-debug.log*
+.env
+.env.*
+
+# Local source material used while merging; not redistributed.
+extras/
+
+# Tooling state
+.omc/
+.claude/settings.local.json
