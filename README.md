@@ -79,7 +79,7 @@ Ask your assistant for plugin work as usual; the skill triggers on plugin tasks.
 - "Prepare release 1.2.0 for WordPress.org."
 - "Check this plugin for obvious security problems."
 
-Start a new plugin from the template:
+Start a new plugin from the template (add `--woocommerce`, `--commercial`, `--elementor` as needed):
 
 ```bash
 node ~/.claude/skills/wp-plugin-development/scripts/scaffold_plugin.mjs --slug acme-reviews --name "Acme Reviews"

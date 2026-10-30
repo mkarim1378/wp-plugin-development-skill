@@ -118,8 +118,7 @@ Then verify the zip:
 
 ## Private / commercial distribution
 
-- Set `Update URI` in the header and implement updates via the `update_plugins_{$hostname}` filter (WP 5.8+), or use an established updater library.
-- Never hijack WordPress.org updates for a slug you don't own.
+See `commercial-distribution.md` (Update URI, update server format, license keys, fail-safe rules, free vs pro on WordPress.org). The scaffold's `--commercial` option generates a tested updater.
 
 Upstream reference:
 

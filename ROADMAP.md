@@ -35,9 +35,9 @@ New skill `skills/wp-woocommerce-extension/`.
 
 ## Phase 4 — Commercial plugins: licensing and private updates
 
-- [ ] Hub reference `commercial-distribution.md`: `Update URI` + `update_plugins_{$hostname}`, update server response shape, `plugins_api` details, license activation/deactivation, caching license checks, failing safe (no fatal, no remote kill switch), not violating WordPress.org guidelines for the free version.
-- [ ] Scaffold option `--commercial` with an updater skeleton.
-- [ ] Eval scenarios.
+- [x] Hub reference `commercial-distribution.md`: `Update URI` + `update_plugins_{$hostname}`, update server response shape, `plugins_api` details, license activation/deactivation, caching license checks, failing safe (no fatal, no remote kill switch), not violating WordPress.org guidelines for the free version.
+- [x] Scaffold option `--commercial` with an updater skeleton.
+- [x] Eval scenarios.
 
 ## Phase 5 — Elementor addon skill
 

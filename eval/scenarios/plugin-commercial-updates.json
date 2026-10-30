@@ -1,0 +1,21 @@
+{
+  "name": "Private updates with license keys",
+  "skills": [
+    "wp-plugin-development"
+  ],
+  "query": "We sell a pro plugin from our own site. Add license key activation and automatic updates from our server.",
+  "expected_behavior": [
+    "Step 1: Load references/commercial-distribution.md",
+    "Step 2: Add an Update URI header and hook update_plugins_{$hostname} for that host",
+    "Step 3: Fetch, validate and cache the update JSON; only accept https packages on the update host",
+    "Step 4: Send the license key in a header only to the update host via http_request_args",
+    "Step 5: Add plugins_api for the View details modal with wp_kses_post sections",
+    "Step 6: Fail safe: license problems disable updates, never site functionality"
+  ],
+  "success_criteria": [
+    "No remote kill switch or obfuscation",
+    "License key never in URLs or autoloaded options",
+    "Update server outages do not slow every admin page (negative caching)",
+    "Disclosure of data sent in readme/privacy text"
+  ]
+}

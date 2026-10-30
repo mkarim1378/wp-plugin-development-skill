@@ -1,0 +1,19 @@
+{
+  "name": "Split a plugin into free (WordPress.org) and pro",
+  "skills": [
+    "wp-plugin-development",
+    "wp-plugin-directory-guidelines"
+  ],
+  "query": "We want a free version on WordPress.org and a paid pro add-on. How should we structure it?",
+  "expected_behavior": [
+    "Step 1: Load references/commercial-distribution.md (free version section) and wp-plugin-directory-guidelines",
+    "Step 2: Keep the free plugin fully functional with no license checks or locked features",
+    "Step 3: Make pro a separate plugin with Requires Plugins: <free-slug> and its own Update URI",
+    "Step 4: Limit upsells to the plugin's own screens and make them dismissible"
+  ],
+  "success_criteria": [
+    "No trialware in the free plugin",
+    "Pro does not hijack the free plugin's WordPress.org updates",
+    "Upsell notices comply with guideline 11"
+  ]
+}

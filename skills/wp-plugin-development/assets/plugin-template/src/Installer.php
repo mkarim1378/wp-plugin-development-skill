@@ -49,6 +49,9 @@ final class Installer {
 
 		if ( version_compare( $installed, '1', '<' ) ) {
 			add_option( self::OPTION_SETTINGS, Settings::defaults(), '', false );
+{{#commercial}}
+			add_option( '{{prefix}}_license_key', '', '', false );
+{{/commercial}}
 		}
 
 		update_option( self::OPTION_DB_VERSION, {{PREFIX}}_DB_VERSION, false );

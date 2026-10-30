@@ -62,6 +62,7 @@ Load the matching reference (one hop from this file) or hand off to the sibling 
 | Custom WP-CLI commands | `references/wp-cli-commands.md` |
 | PHPCS/WPCS, PHPUnit, E2E, CI | `references/testing-and-quality.md` |
 | Version bump, `readme.txt`, build, zip, SVN | `references/release.md` |
+| Selling outside WordPress.org: license keys, private updates (`Update URI`) | `references/commercial-distribution.md` |
 | Something is broken | `references/debugging.md` |
 
 Sibling skills (hand off, then return here for plugin-level guardrails):

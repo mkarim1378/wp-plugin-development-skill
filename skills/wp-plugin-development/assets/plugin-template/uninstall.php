@@ -14,6 +14,10 @@ function {{prefix}}_uninstall_site() {
 	delete_option( '{{prefix}}_settings' );
 	delete_option( '{{prefix}}_db_version' );
 	wp_clear_scheduled_hook( '{{prefix}}_daily' );
+{{#commercial}}
+	delete_option( '{{prefix}}_license_key' );
+	delete_transient( '{{prefix}}_update_info' );
+{{/commercial}}
 }
 
 if ( is_multisite() ) {

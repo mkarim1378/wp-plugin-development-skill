@@ -62,6 +62,27 @@ final class SettingsPage {
 			'{{prefix}}_general',
 			array( 'label_for' => '{{prefix}}_title' )
 		);
+{{#commercial}}
+
+		register_setting(
+			self::GROUP,
+			'{{prefix}}_license_key',
+			array(
+				'type'              => 'string',
+				'default'           => '',
+				'sanitize_callback' => 'sanitize_text_field',
+			)
+		);
+
+		add_settings_field(
+			'{{prefix}}_license',
+			__( 'License key', '{{slug}}' ),
+			array( $this, 'render_license_field' ),
+			self::PAGE,
+			'{{prefix}}_general',
+			array( 'label_for' => '{{prefix}}_license' )
+		);
+{{/commercial}}
 	}
 
 	/**
@@ -135,4 +156,18 @@ final class SettingsPage {
 			esc_attr( $settings['title'] )
 		);
 	}
+{{#commercial}}
+
+	/**
+	 * License key field. Only users with manage_options reach this page.
+	 */
+	public function render_license_field() {
+		printf(
+			'<input type="password" class="regular-text" id="%1$s" name="%1$s_key" value="%2$s" autocomplete="off"><p class="description">%3$s</p>',
+			esc_attr( '{{prefix}}_license' ),
+			esc_attr( (string) get_option( '{{prefix}}_license_key', '' ) ),
+			esc_html__( 'Enables automatic updates from the vendor.', '{{slug}}' )
+		);
+	}
+{{/commercial}}
 }
