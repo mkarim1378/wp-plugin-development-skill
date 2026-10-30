@@ -1,1 +1,4 @@
 * text=auto eol=lf
+
+# Fixtures that must keep their exact bytes (line endings, trailing whitespace).
+tests/fixtures/crlf-plugin/** -text

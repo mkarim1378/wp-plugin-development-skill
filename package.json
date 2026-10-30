@@ -1,0 +1,17 @@
+{
+  "name": "wp-plugin-development-skill",
+  "private": true,
+  "description": "Agent skills for WordPress plugin development (hub skill + bundled WordPress/agent-skills).",
+  "license": "GPL-2.0-or-later",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "validate": "node shared/scripts/validate-skills.mjs",
+    "test": "node --test tests/check_plugin_basics.test.mjs",
+    "check": "npm run validate && npm test",
+    "install-skills": "node scripts/install.mjs",
+    "upstream-diff": "node scripts/upstream-diff.mjs"
+  }
+}
