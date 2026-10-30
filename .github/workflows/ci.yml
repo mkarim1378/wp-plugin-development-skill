@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Validate skill metadata and triage output
+        run: npm run validate
+      - name: Test check_plugin_basics
+        run: npm test
+      - name: Eval scenarios are valid JSON
+        run: |
+          for f in eval/scenarios/*.json; do
+            node -e 'const s=JSON.parse(require("fs").readFileSync(process.argv[1],"utf8")); if(!s.name||!Array.isArray(s.skills)||!s.query) throw new Error("bad scenario")' "$f" || { echo "Invalid: $f"; exit 1; }
+          done

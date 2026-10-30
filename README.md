@@ -1,0 +1,98 @@
+# WordPress Plugin Development Skill
+
+Agent skills that teach AI coding assistants (Claude Code, Cursor, Codex, Copilot, Gemini CLI, …) how to build, review, and release WordPress plugins the right way.
+
+The centrepiece is **`wp-plugin-development`**, a hub skill that covers plugin work end to end and hands off to focused sibling skills imported from the official [WordPress/agent-skills](https://github.com/WordPress/agent-skills) project.
+
+Targets **WordPress 7.0+ / PHP 7.4+**, with notes on WordPress 7.1 changes.
+
+## What's inside
+
+| Skill | Purpose |
+| --- | --- |
+| **wp-plugin-development** | Hub: headers/bootstrap, architecture and prefixing, hooks, lifecycle and upgrade routines, admin UI, Settings API, assets and script modules, CPTs/meta, options/transients/custom tables/cron, HTTP API, i18n/RTL, multisite, privacy, security, WP 7.x features (AI Client, PHP-only blocks, DataViews, iframed editor), WP-CLI commands, testing, release packaging |
+| wp-project-triage | Deterministic repo inspection (project kind, tooling, versions) |
+| wordpress-router | Classifies a repo and routes to the right skill |
+| wp-rest-api | REST routes, controllers, schema, permissions |
+| wp-abilities-api / -audit / -verify | Abilities API registration, auditing, and verification |
+| wp-plugin-directory-guidelines | WordPress.org guidelines, GPL, naming, Plugin Check |
+| wp-block-development | Blocks shipped by plugins (`block.json`, deprecations) |
+| wp-interactivity-api | `data-wp-*` directives and stores |
+| wp-phpstan | Static analysis |
+| wp-env / wp-playground | Local and disposable WordPress environments |
+| wp-performance | Profiling, autoload bloat, caching |
+| wp-wpcli-and-ops | Operating sites with WP-CLI |
+
+Everything except `wp-plugin-development` is kept as close to upstream as possible; see [UPSTREAM.md](UPSTREAM.md) for the pinned commit and every local change.
+
+### Hub skill layout
+
+```
+skills/wp-plugin-development/
+├── SKILL.md                 # procedure, routing table, guardrails, verification
+├── references/              # 18 topic files, loaded one at a time as needed
+└── scripts/
+    ├── detect_plugins.mjs       # find plugin main files and headers
+    └── check_plugin_basics.mjs  # heuristic self-check (SQL, escaping, nonces, i18n, headers/readme)
+```
+
+## Install
+
+Requires Node.js 20+.
+
+```bash
+git clone https://github.com/mkarim1378/wp-plugin-development-skill.git
+cd wp-plugin-development-skill
+```
+
+Global install (all projects, Claude Code):
+
+```bash
+node scripts/install.mjs
+```
+
+Project install (commit it so your team gets it):
+
+```bash
+node scripts/install.mjs --project /path/to/your-plugin-repo
+```
+
+Other agents or locations:
+
+```bash
+node scripts/install.mjs --target ~/.cursor/skills
+```
+
+Options: `--skills a,b` to install a subset (keep `wp-project-triage` with the hub), `--force` to replace already installed skills, `--dry-run` to preview.
+
+## Use
+
+Ask your assistant for plugin work as usual; the skill triggers on plugin tasks. Examples:
+
+- "Add a settings page with a checkbox and an API key field to this plugin."
+- "Our custom table needs a new column in 1.3; make sure updated sites get it."
+- "Add an AI summary button using WordPress 7.0's AI Client."
+- "Prepare release 1.2.0 for WordPress.org."
+- "Check this plugin for obvious security problems."
+
+Run the self-check directly:
+
+```bash
+node ~/.claude/skills/wp-plugin-development/scripts/check_plugin_basics.mjs path/to/plugin
+```
+
+It prints a JSON report (`--strict` exits 1 on errors). It is heuristic; it complements PHPCS/WPCS and Plugin Check rather than replacing them.
+
+## Development
+
+```bash
+npm run validate      # skill frontmatter + triage contract
+npm test              # check_plugin_basics tests against tests/fixtures
+npm run upstream-diff # compare bundled skills with WordPress/agent-skills trunk
+```
+
+Eval scenarios live in `eval/scenarios/`. Each describes a prompt, the expected procedure, and success criteria; run them manually with your assistant when changing a skill.
+
+## Credits and license
+
+Bundled skills come from [WordPress/agent-skills](https://github.com/WordPress/agent-skills) by WordPress contributors. This repository is distributed under the same license, GPL-2.0-or-later (see [LICENSE](LICENSE)).
