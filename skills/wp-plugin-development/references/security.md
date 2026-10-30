@@ -1,6 +1,6 @@
 # Security guardrails (plugin work)
 
-Use this file when making security fixes or when handling any input/output.
+Use this file when making security fixes or when handling any input/output. To review a whole plugin, follow `security-audit.md` (it starts by listing every entry point with `scripts/list_entry_points.mjs`).
 
 ## Nonces + permissions
 

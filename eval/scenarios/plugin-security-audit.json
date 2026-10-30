@@ -1,0 +1,23 @@
+{
+  "name": "Security audit of a plugin",
+  "skills": [
+    "wp-plugin-development"
+  ],
+  "fixture": "tests/fixtures/entry-points-plugin",
+  "query": "Do a security review of this plugin before we install it on a client site. Don't change code, just report.",
+  "expected_behavior": [
+    "Step 1: Load references/security-audit.md",
+    "Step 2: Run scripts/list_entry_points.mjs and review every high/review entry in the code",
+    "Step 3: Run check_plugin_basics.mjs and the manual grep sweep",
+    "Step 4: Report findings with file:line, who can exploit, severity, and a concrete fix",
+    "Step 5: State what was not checked"
+  ],
+  "success_criteria": [
+    "Finds the AJAX handler without nonce and capability checks",
+    "Finds the REST route without permission_callback",
+    "Finds the init handler that deletes options from a GET parameter",
+    "Finds the settings page form without a nonce",
+    "Does not modify code",
+    "Does not claim the plugin is secure"
+  ]
+}

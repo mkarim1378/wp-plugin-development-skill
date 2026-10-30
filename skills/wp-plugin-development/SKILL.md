@@ -59,6 +59,7 @@ Load the matching reference (one hop from this file) or hand off to the sibling 
 | Multisite and network activation | `references/multisite.md` |
 | Personal data export/erase, privacy policy text | `references/privacy.md` |
 | Any input/output, AJAX, uploads, SQL, redirects | `references/security.md` (always for code that touches user input) |
+| Security review of a whole plugin (own, client, or third-party) | `references/security-audit.md` + `scripts/list_entry_points.mjs` |
 | WordPress 7.0/7.1 features (AI Client, PHP-only blocks, DataViews, iframed editor) | `references/wp-7-features.md` |
 | Custom WP-CLI commands | `references/wp-cli-commands.md` |
 | PHPCS/WPCS, PHPUnit, E2E, CI | `references/testing-and-quality.md` |

@@ -38,7 +38,8 @@ skills/wp-plugin-development/
 └── scripts/
     ├── detect_plugins.mjs       # find plugin main files and headers
     ├── scaffold_plugin.mjs      # generate a new plugin from assets/plugin-template (+ feature overlays)
-    └── check_plugin_basics.mjs  # heuristic self-check (SQL, escaping, nonces, REST, uploads, i18n, headers/readme; JSON or SARIF)
+    ├── check_plugin_basics.mjs  # heuristic self-check (SQL, escaping, nonces, REST, uploads, i18n, headers/readme; JSON or SARIF)
+    └── list_entry_points.mjs    # attack surface: AJAX, REST, admin-post, shortcodes, pages, request hooks, cron, with nonce/capability checks
 ```
 
 ## Install
@@ -92,7 +93,13 @@ Run the self-check directly:
 node ~/.claude/skills/wp-plugin-development/scripts/check_plugin_basics.mjs path/to/plugin
 ```
 
-It prints a JSON report (`--format sarif` for GitHub code scanning, `--strict` exits 1 on errors). It is heuristic; it complements PHPCS/WPCS and Plugin Check rather than replacing them.
+It prints a JSON report (`--format sarif` for GitHub code scanning, `--strict` exits 1 on errors).
+
+Map a plugin's attack surface before a security review:
+
+```bash
+node ~/.claude/skills/wp-plugin-development/scripts/list_entry_points.mjs path/to/plugin --format md
+``` It is heuristic; it complements PHPCS/WPCS and Plugin Check rather than replacing them.
 
 ## Development
 
