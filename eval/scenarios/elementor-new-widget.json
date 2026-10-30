@@ -1,0 +1,21 @@
+{
+  "name": "Create an Elementor widget",
+  "skills": [
+    "wp-elementor-addon",
+    "wp-plugin-development"
+  ],
+  "query": "Add an Elementor 'Pricing card' widget with title, price, features list (repeater), button link, and style controls for colors and typography.",
+  "expected_behavior": [
+    "Step 1: Load references/widgets.md and integration-and-compat.md",
+    "Step 2: Register on elementor/widgets/register after did_action('elementor/loaded') and a version check",
+    "Step 3: Implement controls with a Repeater, URL control, COLOR and Group_Control_Typography using {{WRAPPER}} selectors",
+    "Step 4: Escape every setting in render(); use add_link_attributes() for the button",
+    "Step 5: Mirror the output in content_template() with {{ }} escaping",
+    "Step 6: Declare has_widget_inner_wrapper(): bool and is_dynamic_content(): bool with return types"
+  ],
+  "success_criteria": [
+    "No unescaped settings in render() or content_template()",
+    "Assets registered and declared via get_style_depends()/get_script_depends()",
+    "Works without Elementor Pro"
+  ]
+}

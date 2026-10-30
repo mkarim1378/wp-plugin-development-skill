@@ -1,0 +1,19 @@
+{
+  "name": "Audit an Elementor addon for stored XSS",
+  "skills": [
+    "wp-elementor-addon"
+  ],
+  "query": "A security report says our Elementor addon has stored XSS via widget settings. Find and fix it.",
+  "expected_behavior": [
+    "Step 1: Load references/security.md",
+    "Step 2: Review render() and content_template() of every widget for unescaped settings and raw {{{ }}} output",
+    "Step 3: Validate HTML tag settings against an allow list",
+    "Step 4: Replace manual link printing with add_link_attributes()",
+    "Step 5: Test with XSS payloads in text, URL and select controls"
+  ],
+  "success_criteria": [
+    "Payloads render inert on the frontend and in the editor preview",
+    "Contributor-level editors cannot inject script",
+    "Fix covers all widgets, not only the reported one"
+  ]
+}

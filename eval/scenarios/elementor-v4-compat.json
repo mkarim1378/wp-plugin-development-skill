@@ -1,0 +1,19 @@
+{
+  "name": "Elementor 4 compatibility check",
+  "skills": [
+    "wp-elementor-addon"
+  ],
+  "query": "Our widgets look broken on sites that upgraded to Elementor 4. What should we check?",
+  "expected_behavior": [
+    "Step 1: Load references/integration-and-compat.md",
+    "Step 2: Look for CSS/JS that targets .elementor-widget-container or other wrapper markup",
+    "Step 3: Replace deprecated registration hooks and _register_controls/_content_template",
+    "Step 4: Use global colors/fonts on style controls",
+    "Step 5: Test v3 widgets alongside atomic elements on the same page"
+  ],
+  "success_criteria": [
+    "No reliance on removed wrapper elements",
+    "No deprecated Elementor APIs remain",
+    "Tested against the latest Elementor and the declared minimum"
+  ]
+}

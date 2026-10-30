@@ -9,7 +9,7 @@ import { fileURLToPath } from "node:url";
 //        [--author "Acme"] [--author-uri URL] [--plugin-uri URL] [--contributors wporg-user]
 //        [--tags "a, b"] [--composer-vendor acme] [--version 0.1.0]
 //        [--wp-min 7.0] [--php-min 7.4] [--tested 7.1]
-//        [--woocommerce [--wc-min 10.0] [--wc-tested 11.2]] [--commercial [--update-uri URL] [--update-api URL]] [--elementor]
+//        [--woocommerce [--wc-min 10.0] [--wc-tested 11.2]] [--commercial [--update-uri URL] [--update-api URL]] [--elementor [--elementor-min 3.25.0] [--elementor-tested 4.3.0]]
 //        [--dry-run]
 //
 // Template syntax: {{key}} values, {{#key}}...{{/key}} when truthy, {{^key}}...{{/key}} when falsy.
@@ -21,6 +21,8 @@ const templateDir = path.join(skillDir, "assets", "plugin-template");
 const overlaysDir = path.join(skillDir, "assets", "overlays");
 const FEATURES = ["woocommerce", "commercial", "elementor"];
 const IGNORED_NAMES = new Set([".omc", ".DS_Store", "Thumbs.db"]);
+// Elementor selector placeholders that must survive rendering ({{WRAPPER}}, {{VALUE}}, ...).
+const PASSTHROUGH = new Set(["WRAPPER", "VALUE", "UNIT", "SIZE", "TOP", "RIGHT", "BOTTOM", "LEFT", "CURRENT_ITEM", "ID", "URL"]);
 
 function fail(message) {
   process.stderr.write(`${message}\n`);
@@ -103,6 +105,8 @@ function buildContext(opts) {
     requires_plugins: requiresPlugins,
     wc_min: opts["wc-min"] ?? "10.0",
     wc_tested: opts["wc-tested"] ?? "11.2",
+    elementor_min: opts["elementor-min"] ?? "3.25.0",
+    elementor_tested: opts["elementor-tested"] ?? "4.3.0",
     update_uri: features.commercial ? opts["update-uri"] ?? `https://updates.example.com/${slug}` : "",
     update_api: features.commercial ? opts["update-api"] ?? `${opts["update-uri"] ?? `https://updates.example.com/${slug}`}/info.json` : "",
     namespace_header: namespace.replace(/\\/g, ""),
@@ -127,8 +131,11 @@ export function render(text, ctx, file = "template") {
     if (guard > 1000) throw new Error(`${file}: section nesting too deep`);
   }
 
-  return out.replace(/\{\{(\w+)\}\}/g, (_, key) => {
-    if (!(key in ctx)) throw new Error(`${file}: unknown placeholder "${key}"`);
+  return out.replace(/\{\{(\w+)\}\}/g, (match, key) => {
+    if (!(key in ctx)) {
+      if (PASSTHROUGH.has(key)) return match;
+      throw new Error(`${file}: unknown placeholder "${key}"`);
+    }
     return String(ctx[key]);
   });
 }

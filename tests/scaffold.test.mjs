@@ -40,6 +40,7 @@ test("render handles values, sections, inverted sections and standalone tags", (
   assert.equal(render("1\n{{#off}}\nhidden\n{{/off}}\n2\n", ctx), "1\n2\n");
   assert.equal(render("${{ matrix.php }}", ctx), "${{ matrix.php }}");
   assert.throws(() => render("{{missing}}", ctx), /unknown placeholder/);
+  assert.equal(render("{{WRAPPER}} .x { color: {{VALUE}}; }", ctx), "{{WRAPPER}} .x { color: {{VALUE}}; }");
 });
 
 for (const features of variants) {
@@ -55,8 +56,9 @@ for (const features of variants) {
 
     for (const file of listFiles(dest)) {
       const text = fs.readFileSync(file, "utf8");
-      const leftovers = text.match(/\{\{[#^/]?\w+\}\}/g);
-      assert.equal(leftovers, null, `${file} has unrendered tags: ${leftovers}`);
+      // Elementor selector placeholders ({{WRAPPER}}, {{VALUE}}) are meant to survive.
+      const leftovers = (text.match(/\{\{[#^/]?\w+\}\}/g) || []).filter((t) => !/^\{\{[A-Z_]+\}\}$/.test(t) || /PREFIX/.test(t));
+      assert.deepEqual(leftovers, [], `${file} has unrendered tags: ${leftovers}`);
     }
 
     const checked = JSON.parse(node([check, dest]).stdout);

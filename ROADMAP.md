@@ -41,9 +41,9 @@ New skill `skills/wp-woocommerce-extension/`.
 
 ## Phase 5 — Elementor addon skill
 
-- [ ] New skill `skills/wp-elementor-addon/`: registering widgets on `elementor/widgets/register`, controls and responsive controls, `render()` escaping, `content_template()`, dependencies on Elementor version, dynamic tags, assets via `get_script_depends()`/`get_style_depends()`, Elementor Pro detection, performance (no per-widget queries in loops).
-- [ ] Scaffold option `--elementor`.
-- [ ] Eval scenarios.
+- [x] New skill `skills/wp-elementor-addon/`: registering widgets on `elementor/widgets/register`, controls and responsive controls, `render()` escaping, `content_template()`, dependencies on Elementor version, dynamic tags, assets via `get_script_depends()`/`get_style_depends()`, Elementor Pro detection, performance (no per-widget queries in loops).
+- [x] Scaffold option `--elementor`.
+- [x] Eval scenarios.
 
 ## Phase 6 — Automated eval runner
 

@@ -71,6 +71,7 @@ Sibling skills (hand off, then return here for plugin-level guardrails):
 | --- | --- |
 | WooCommerce: orders/HPOS, products, cart pricing, Checkout blocks, gateways | `wp-woocommerce-extension` |
 | Persian/Iranian market: Jalali dates, digits, RTL, Iranian gateways, SMS/OTP | `wp-persian-localization` |
+| Elementor widgets, controls, dynamic tags, Elementor 4 compatibility | `wp-elementor-addon` |
 | REST routes, controllers, schema, `permission_callback` | `wp-rest-api` |
 | Registering abilities for AI agents / MCP | `wp-abilities-api` (audit: `wp-abilities-audit`, verify: `wp-abilities-verify`) |
 | Blocks shipped by the plugin (`block.json`, deprecations) | `wp-block-development` |

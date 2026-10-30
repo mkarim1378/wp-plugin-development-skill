@@ -19,6 +19,9 @@
  * WC requires at least: {{wc_min}}
  * WC tested up to:   {{wc_tested}}
 {{/woocommerce}}
+{{#elementor}}
+ * Elementor tested up to: {{elementor_tested}}
+{{/elementor}}
 {{#update_uri}}
  * Update URI:        {{update_uri}}
 {{/update_uri}}
