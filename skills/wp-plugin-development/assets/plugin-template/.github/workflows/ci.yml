@@ -26,6 +26,19 @@ jobs:
       - name: PHPCS
         run: composer lint
 
+{{#js}}
+  js:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install
+      - run: npm run lint:js
+      - run: npm run build
+
+{{/js}}
   test:
     runs-on: ubuntu-latest
     steps:
@@ -39,5 +52,8 @@ jobs:
           tools: composer
       - run: composer install --no-progress
       - run: npm install
+{{#js}}
+      - run: npm run build
+{{/js}}
       - run: npx wp-env start
       - run: npm run test:php

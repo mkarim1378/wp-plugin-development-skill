@@ -10,6 +10,7 @@ import { fileURLToPath } from "node:url";
 //        [--tags "a, b"] [--composer-vendor acme] [--version 0.1.0]
 //        [--wp-min 7.0] [--php-min 7.4] [--tested 7.1]
 //        [--woocommerce [--wc-min 10.0] [--wc-tested 11.2]] [--commercial [--update-uri URL] [--update-api URL]] [--elementor [--elementor-min 3.25.0] [--elementor-tested 4.3.0]]
+//        [--block] [--admin-app]
 //        [--dry-run]
 //
 // Template syntax: {{key}} values, {{#key}}...{{/key}} when truthy, {{^key}}...{{/key}} when falsy.
@@ -19,7 +20,9 @@ import { fileURLToPath } from "node:url";
 const skillDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const templateDir = path.join(skillDir, "assets", "plugin-template");
 const overlaysDir = path.join(skillDir, "assets", "overlays");
-const FEATURES = ["woocommerce", "commercial", "elementor"];
+const FEATURES = ["woocommerce", "commercial", "elementor", "block", "admin-app"];
+// Template keys must be w, so "admin-app" is {{#admin_app}} in templates.
+const featureKey = (f) => f.replace(/-/g, "_");
 const IGNORED_NAMES = new Set([".omc", ".DS_Store", "Thumbs.db"]);
 // Elementor selector placeholders that must survive rendering ({{WRAPPER}}, {{VALUE}}, ...).
 const PASSTHROUGH = new Set(["WRAPPER", "VALUE", "UNIT", "SIZE", "TOP", "RIGHT", "BOTTOM", "LEFT", "CURRENT_ITEM", "ID", "URL"]);
@@ -73,9 +76,9 @@ function buildContext(opts) {
   }
   if (!/^[A-Z][A-Za-z0-9]*(?:\\[A-Z][A-Za-z0-9]*)*$/.test(namespace)) fail(`Invalid namespace "${namespace}".`);
 
-  const features = Object.fromEntries(FEATURES.map((f) => [f, Boolean(opts[f])]));
+  const features = Object.fromEntries(FEATURES.map((f) => [featureKey(f), Boolean(opts[f])]));
   for (const f of FEATURES) {
-    if (features[f] && !fs.existsSync(path.join(overlaysDir, f))) fail(`Feature --${f} has no overlay in assets/overlays/${f}.`);
+    if (features[featureKey(f)] && !fs.existsSync(path.join(overlaysDir, f))) fail(`Feature --${f} has no overlay in assets/overlays/${f}.`);
   }
 
   const requiresPlugins = [features.woocommerce && "woocommerce", features.elementor && "elementor"].filter(Boolean).join(", ");
@@ -111,6 +114,8 @@ function buildContext(opts) {
     update_api: features.commercial ? opts["update-api"] ?? `${opts["update-uri"] ?? `https://updates.example.com/${slug}`}/info.json` : "",
     namespace_header: namespace.replace(/\\/g, ""),
     external_services: features.commercial,
+    js: features.block || features.admin_app,
+    build_all: [features.block && "npm run build:blocks", features.admin_app && "npm run build:admin"].filter(Boolean).join(" && "),
     ...features,
   };
 }
@@ -164,7 +169,7 @@ function main() {
   if (fs.existsSync(dest) && fs.readdirSync(dest).length > 0) fail(`Destination is not empty: ${dest}`);
 
   // Base template first, then each enabled feature overlay (overlay files replace base files).
-  const sources = [templateDir, ...FEATURES.filter((f) => ctx[f]).map((f) => path.join(overlaysDir, f))];
+  const sources = [templateDir, ...FEATURES.filter((f) => ctx[featureKey(f)]).map((f) => path.join(overlaysDir, f))];
   const files = new Map();
   for (const root of sources) {
     for (const rel of collectFiles(root)) files.set(rel, path.join(root, rel));
@@ -188,7 +193,7 @@ function main() {
     slug: ctx.slug,
     prefix: ctx.prefix,
     namespace: ctx.namespace,
-    features: FEATURES.filter((f) => ctx[f]),
+    features: FEATURES.filter((f) => ctx[featureKey(f)]),
     files: written,
     next: [
       `cd ${dest}`,

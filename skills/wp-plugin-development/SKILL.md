@@ -36,7 +36,7 @@ Paths of the form `skills/<name>/...` are relative to the directory these skills
 4. Follow the repo's existing conventions (coding standard, autoloader, build tool, test runner) over the defaults in this skill.
 5. For a brand-new plugin, generate it instead of writing files by hand:
    - `node skills/wp-plugin-development/scripts/scaffold_plugin.mjs --slug <slug> --name "<Name>" --dest <dir>`
-   - Feature overlays: `--woocommerce`, `--commercial`, `--elementor` (combinable). Run with `--dry-run` first and show the file list.
+   - Feature overlays: `--woocommerce`, `--commercial`, `--elementor`, `--block` (dynamic block + blocks manifest), `--admin-app` (React page + REST endpoint); combinable. Run with `--dry-run` first and show the file list.
    - The output passes `check_plugin_basics`, PHP lint, and WPCS out of the box; keep it that way as you add code.
 
 ### 1) Route the task
@@ -51,6 +51,7 @@ Load the matching reference (one hop from this file) or hand off to the sibling 
 | Admin menus, admin-post handlers, notices, list screens | `references/admin-ui.md` |
 | Options pages with the Settings API | `references/settings-api.md` |
 | Enqueueing scripts/styles, script modules, editor assets | `references/assets-and-script-modules.md` |
+| Editor sidebar panels, `@wordpress/data`, `apiFetch`, React admin pages, JS builds | `references/javascript-and-react.md` |
 | Custom post types, taxonomies, post/term/user meta | `references/content-types-and-meta.md` |
 | Options, transients, custom tables, cron | `references/data-and-cron.md` |
 | Calling external services (HTTP API) | `references/http-api.md` |

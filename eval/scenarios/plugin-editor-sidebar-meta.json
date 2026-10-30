@@ -1,0 +1,20 @@
+{
+  "name": "Editor sidebar panel for post meta",
+  "skills": [
+    "wp-plugin-development"
+  ],
+  "query": "Add a 'Subtitle' field to the post editor sidebar that saves to post meta and shows under the title on the frontend.",
+  "expected_behavior": [
+    "Step 1: Load references/javascript-and-react.md and content-types-and-meta.md",
+    "Step 2: Register the meta with register_post_meta(), show_in_rest, sanitize_callback and auth_callback",
+    "Step 3: Build a PluginDocumentSettingPanel (from @wordpress/editor) using useEntityProp for meta",
+    "Step 4: Enqueue on enqueue_block_editor_assets with the generated .asset.php",
+    "Step 5: Print the subtitle on the frontend escaped with esc_html()"
+  ],
+  "success_criteria": [
+    "No separate save request; meta saves with the post",
+    "PluginDocumentSettingPanel imported from @wordpress/editor, not @wordpress/edit-post",
+    "Meta registered with show_in_rest and an auth_callback",
+    "Frontend output escaped"
+  ]
+}

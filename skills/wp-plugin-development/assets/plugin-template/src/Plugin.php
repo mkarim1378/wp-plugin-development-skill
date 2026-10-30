@@ -28,7 +28,18 @@ final class Plugin {
 
 		if ( is_admin() ) {
 			( new Admin\SettingsPage() )->register();
+{{#admin_app}}
+			( new Admin\AppPage() )->register();
+{{/admin_app}}
 		}
+{{#admin_app}}
+
+		( new Rest\SettingsController() )->register();
+{{/admin_app}}
+{{#block}}
+
+		( new Blocks() )->register();
+{{/block}}
 {{#woocommerce}}
 
 		( new WooCommerce\Integration() )->register();

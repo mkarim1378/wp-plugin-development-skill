@@ -5,14 +5,29 @@
 	"description": "{{description}}",
 	"license": "GPL-2.0-or-later",
 	"scripts": {
+{{#block}}
+		"build:blocks": "wp-scripts build --source-path=assets-src/blocks --output-path=build/blocks --blocks-manifest",
+		"start:blocks": "wp-scripts start --source-path=assets-src/blocks --output-path=build/blocks --blocks-manifest",
+{{/block}}
+{{#admin_app}}
+		"build:admin": "wp-scripts build assets-src/admin/index.js --output-path=build/admin",
+		"start:admin": "wp-scripts start assets-src/admin/index.js --output-path=build/admin",
+{{/admin_app}}
+{{#js}}
+		"build": "{{build_all}}",
+		"lint:js": "wp-scripts lint-js assets-src",
+{{/js}}
 		"env": "wp-env",
 		"env:start": "wp-env start",
 		"env:stop": "wp-env stop",
 		"test:php": "wp-env run tests-cli --env-cwd=wp-content/plugins/{{slug}} vendor/bin/phpunit",
-		"i18n:pot": "wp-env run cli --env-cwd=wp-content/plugins/{{slug}} wp i18n make-pot . languages/{{slug}}.pot --exclude=node_modules,vendor,tests",
+		"i18n:pot": "wp-env run cli --env-cwd=wp-content/plugins/{{slug}} wp i18n make-pot . languages/{{slug}}.pot --exclude=node_modules,vendor,tests{{#js}},assets-src{{/js}}",
 		"plugin-zip": "wp-scripts plugin-zip"
 	},
 	"files": [
+{{#js}}
+		"build",
+{{/js}}
 		"{{slug}}.php",
 		"uninstall.php",
 		"readme.txt",
@@ -20,8 +35,22 @@
 		"vendor",
 		"languages"
 	],
+{{#js}}
+	"dependencies": {
+{{#admin_app}}
+		"@wordpress/api-fetch": "^8.0.0",
+		"@wordpress/components": "^43.0.0",
+		"@wordpress/element": "^10.0.0",
+{{/admin_app}}
+{{#block}}
+		"@wordpress/block-editor": "^19.0.0",
+		"@wordpress/blocks": "^17.0.0",
+{{/block}}
+		"@wordpress/i18n": "^7.0.0"
+	},
+{{/js}}
 	"devDependencies": {
-		"@wordpress/env": "^10.0.0",
-		"@wordpress/scripts": "^30.0.0"
+		"@wordpress/env": "^12.0.0",
+		"@wordpress/scripts": "^37.0.0"
 	}
 }

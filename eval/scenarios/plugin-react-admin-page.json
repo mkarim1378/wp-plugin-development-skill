@@ -1,0 +1,21 @@
+{
+  "name": "React admin page backed by REST",
+  "skills": [
+    "wp-plugin-development",
+    "wp-rest-api"
+  ],
+  "query": "Replace our PHP settings form with a React admin page.",
+  "expected_behavior": [
+    "Step 1: Load references/javascript-and-react.md (or scaffold with --admin-app)",
+    "Step 2: Add a REST route with permission_callback current_user_can( 'manage_options' ) and schema args",
+    "Step 3: Reuse the existing sanitize function on save",
+    "Step 4: Mount a React app with @wordpress/components and apiFetch; enqueue only on its admin screen",
+    "Step 5: Build with @wordpress/scripts and ship build/ not sources"
+  ],
+  "success_criteria": [
+    "REST route rejects non-admins",
+    "Settings sanitized identically to the old form",
+    "Script loads only on the plugin's screen with dependencies from index.asset.php",
+    "Strings translatable via wp_set_script_translations"
+  ]
+}
