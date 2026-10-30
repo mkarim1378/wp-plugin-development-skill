@@ -1,0 +1,18 @@
+{
+  "name": "Report plugin self-check findings to GitHub code scanning",
+  "skills": [
+    "wp-plugin-development"
+  ],
+  "query": "I want the plugin self-check findings to show up in GitHub Security alerts on every pull request.",
+  "expected_behavior": [
+    "Step 1: Load references/testing-and-quality.md (local self-check script section)",
+    "Step 2: Copy check_plugin_basics.mjs into the plugin repo",
+    "Step 3: Add a workflow job that runs it with --format sarif and uploads with github/codeql-action/upload-sarif",
+    "Step 4: Grant security-events: write and pass --uri-prefix when the plugin lives in a subfolder"
+  ],
+  "success_criteria": [
+    "Workflow uploads valid SARIF",
+    "Locations resolve to repository paths",
+    "Explains that findings are heuristic and need review"
+  ]
+}

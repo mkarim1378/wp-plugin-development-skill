@@ -8,12 +8,12 @@ Every phase ends with: facts checked against official docs (no invented APIs), e
 
 Reused by every later phase.
 
-- [ ] `skills/wp-plugin-development/assets/plugin-template/`: main file, `uninstall.php`, `readme.txt`, `src/` with PSR-4 autoload, `composer.json`, `package.json` (`@wordpress/scripts`), `phpcs.xml.dist` (WPCS + PHPCompatibilityWP), `phpunit.xml.dist` + `tests/bootstrap.php`, `.wp-env.json`, `.distignore`, `.gitattributes`, `.github/workflows/ci.yml`.
-- [ ] `scripts/scaffold_plugin.mjs`: generate a plugin from the template with slug, name, prefix, namespace, text domain; `--dry-run`; refuses to overwrite.
-- [ ] Generated plugin passes `check_plugin_basics` with zero findings and PHP lint.
-- [ ] New `check_plugin_basics` rules: `register_rest_route` without `permission_callback`, `wp_ajax_nopriv_` handlers, `flush_rewrite_rules()` outside activation/deactivation, `load_plugin_textdomain()` before `init`, `add_option`/`update_option` with forced autoload on large values, `$_FILES` without `wp_handle_upload()`.
-- [ ] `--format sarif` output for GitHub code scanning, plus a CI example.
-- [ ] Tests for every new rule; SKILL.md and `testing-and-quality.md` updated.
+- [x] `skills/wp-plugin-development/assets/plugin-template/`: main file, `uninstall.php`, `readme.txt`, `src/` with PSR-4 autoload, `composer.json`, `package.json` (`@wordpress/scripts`), `phpcs.xml.dist` (WPCS + PHPCompatibilityWP), `phpunit.xml.dist` + `tests/bootstrap.php`, `.wp-env.json`, `.distignore`, `.gitattributes`, `.github/workflows/ci.yml`.
+- [x] `scripts/scaffold_plugin.mjs`: generate a plugin from the template with slug, name, prefix, namespace, text domain; `--dry-run`; refuses to overwrite.
+- [x] Generated plugin passes `check_plugin_basics` with zero findings and PHP lint.
+- [x] New `check_plugin_basics` rules: `register_rest_route` without `permission_callback`, `wp_ajax_nopriv_` handlers, `flush_rewrite_rules()` outside activation/deactivation, `load_plugin_textdomain()` before `init`, `add_option`/`update_option` with forced autoload on large values, `$_FILES` without `wp_handle_upload()`.
+- [x] `--format sarif` output for GitHub code scanning, plus a CI example.
+- [x] Tests for every new rule; SKILL.md and `testing-and-quality.md` updated.
 
 ## Phase 2 — WooCommerce extension skill
 

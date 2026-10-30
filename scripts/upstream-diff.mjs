@@ -25,7 +25,7 @@ function gitBlobSha(buffer) {
 function listLocalFiles(dir, base = dir) {
   const out = [];
   for (const ent of fs.readdirSync(dir, { withFileTypes: true })) {
-    if (ent.name.startsWith(".")) continue;
+    if (ent.name === ".omc") continue;
     const full = path.join(dir, ent.name);
     if (ent.isDirectory()) out.push(...listLocalFiles(full, base));
     else if (ent.isFile()) out.push(path.relative(base, full).split(path.sep).join("/"));

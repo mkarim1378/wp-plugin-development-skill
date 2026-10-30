@@ -14,6 +14,7 @@ import { fileURLToPath } from "node:url";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const skillsRoot = path.join(repoRoot, "skills");
+const IGNORED_NAMES = new Set([".omc", ".DS_Store", "Thumbs.db", ".git"]);
 
 function parseArgs(argv) {
   const opts = { target: null, skills: null, force: false, dryRun: false };
@@ -80,8 +81,8 @@ function main() {
     process.stdout.write(`  ${exists ? "replace" : "install"}  ${name}\n`);
     if (!opts.dryRun) {
       if (exists) fs.rmSync(dest, { recursive: true, force: true });
-      // Skip hidden files/folders (editor or tooling state) inside skills.
-      fs.cpSync(src, dest, { recursive: true, filter: (p) => !path.basename(p).startsWith(".") });
+      // Skip tooling state; keep template dotfiles such as .gitignore and .wp-env.json.
+      fs.cpSync(src, dest, { recursive: true, filter: (p) => !IGNORED_NAMES.has(path.basename(p)) });
     }
     installed += 1;
   }

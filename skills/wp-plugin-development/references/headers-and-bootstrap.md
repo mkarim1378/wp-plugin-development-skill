@@ -2,6 +2,8 @@
 
 Use this file when creating a plugin or touching its main file.
 
+For a new plugin, prefer generating it: `node skills/wp-plugin-development/scripts/scaffold_plugin.mjs --slug acme-reviews --name "Acme Reviews"`. The template (`assets/plugin-template/`) implements everything below plus Composer autoloading, a Settings API page, an upgrade routine, multisite-aware uninstall, PHPCS/PHPUnit/wp-env config, `.distignore`, and CI. The sections below explain the choices so you can apply them to existing plugins.
+
 ## Main file header
 
 WordPress reads the header from the first 8 KB of the main PHP file in the plugin's top-level directory. Only `Plugin Name` is required, but set all of these for a distributable plugin:

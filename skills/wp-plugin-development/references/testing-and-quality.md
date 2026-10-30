@@ -90,6 +90,28 @@ A minimal GitHub Actions matrix for plugins: PHPCS on the lowest supported PHP, 
 
 `node skills/wp-plugin-development/scripts/check_plugin_basics.mjs <plugin-dir>` gives a fast, dependency-free first pass (JSON output). It complements, not replaces, PHPCS and review.
 
+To surface its findings in GitHub's Security tab, copy the script into the plugin repo (for example `tools/check_plugin_basics.mjs`) and upload SARIF:
+
+```yaml
+  self-check:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node tools/check_plugin_basics.mjs . --format sarif > check.sarif
+      - uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: check.sarif
+          category: plugin-basics
+```
+
+For a plugin in a subfolder of the repo, run it on that folder and pass `--uri-prefix path/to/plugin` so locations resolve.
+
 Upstream reference:
 
 - https://make.wordpress.org/core/handbook/testing/automated-testing/phpunit/

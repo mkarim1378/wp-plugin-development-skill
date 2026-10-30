@@ -30,10 +30,12 @@ Everything except `wp-plugin-development` is kept as close to upstream as possib
 ```
 skills/wp-plugin-development/
 ├── SKILL.md                 # procedure, routing table, guardrails, verification
-├── references/              # 18 topic files, loaded one at a time as needed
+├── references/              # topic files, loaded one at a time as needed
+├── assets/plugin-template/  # WPCS-clean plugin skeleton used by the scaffold script
 └── scripts/
     ├── detect_plugins.mjs       # find plugin main files and headers
-    └── check_plugin_basics.mjs  # heuristic self-check (SQL, escaping, nonces, i18n, headers/readme)
+    ├── scaffold_plugin.mjs      # generate a new plugin from assets/plugin-template (+ feature overlays)
+    └── check_plugin_basics.mjs  # heuristic self-check (SQL, escaping, nonces, REST, uploads, i18n, headers/readme; JSON or SARIF)
 ```
 
 ## Install
@@ -75,19 +77,25 @@ Ask your assistant for plugin work as usual; the skill triggers on plugin tasks.
 - "Prepare release 1.2.0 for WordPress.org."
 - "Check this plugin for obvious security problems."
 
+Start a new plugin from the template:
+
+```bash
+node ~/.claude/skills/wp-plugin-development/scripts/scaffold_plugin.mjs --slug acme-reviews --name "Acme Reviews"
+```
+
 Run the self-check directly:
 
 ```bash
 node ~/.claude/skills/wp-plugin-development/scripts/check_plugin_basics.mjs path/to/plugin
 ```
 
-It prints a JSON report (`--strict` exits 1 on errors). It is heuristic; it complements PHPCS/WPCS and Plugin Check rather than replacing them.
+It prints a JSON report (`--format sarif` for GitHub code scanning, `--strict` exits 1 on errors). It is heuristic; it complements PHPCS/WPCS and Plugin Check rather than replacing them.
 
 ## Development
 
 ```bash
 npm run validate      # skill frontmatter + triage contract
-npm test              # check_plugin_basics tests against tests/fixtures
+npm test              # check_plugin_basics and scaffold tests
 npm run upstream-diff # compare bundled skills with WordPress/agent-skills trunk
 ```
 

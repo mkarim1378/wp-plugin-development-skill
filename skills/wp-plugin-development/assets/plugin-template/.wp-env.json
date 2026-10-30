@@ -1,0 +1,10 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/wp-env.json",
+	"phpVersion": "{{php_min}}",
+	"plugins": [ "."{{#woocommerce}}, "https://downloads.wordpress.org/plugin/woocommerce.latest-stable.zip"{{/woocommerce}}{{#elementor}}, "https://downloads.wordpress.org/plugin/elementor.latest-stable.zip"{{/elementor}} ],
+	"config": {
+		"WP_DEBUG": true,
+		"WP_DEBUG_LOG": true,
+		"SCRIPT_DEBUG": true
+	}
+}

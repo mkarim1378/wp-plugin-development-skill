@@ -410,6 +410,83 @@ function checkTextDomains(text, rel, expectedDomain, report, domainCounts) {
   }
 }
 
+// Yields every call to a function matching `namePattern` with its parsed arguments (multi-line aware).
+function* findCalls(text, namePattern) {
+  const re = new RegExp(`(?<![\\w$>:])(${namePattern})\\s*\\(`, "g");
+  const lines = text.split(/\r?\n/);
+  let m;
+  while ((m = re.exec(text)) !== null) {
+    const openIndex = m.index + m[0].length - 1;
+    const closeIndex = findClosingParen(text, openIndex);
+    if (closeIndex === -1) continue;
+    const line = lineNumberAt(text, m.index);
+    const sourceLine = lines[line - 1] || "";
+    if (isCommentLine(sourceLine)) continue;
+    const argsText = text.slice(openIndex + 1, closeIndex);
+    yield { name: m[1], line, sourceLine, argsText, args: splitArgs(argsText) };
+  }
+}
+
+function literalValue(arg) {
+  const m = (arg || "").match(/^(['"])(.*)\1$/s);
+  return m ? m[2] : null;
+}
+
+const REQUEST_HOOKS = new Set(["init", "wp_loaded", "admin_init", "wp", "plugins_loaded", "template_redirect", "admin_menu", "wp_enqueue_scripts"]);
+
+function checkCalls(text, rel, report) {
+  for (const call of findCalls(text, "register_rest_route")) {
+    if (call.argsText.includes("=>") && !/permission_callback/.test(call.argsText)) {
+      report.add(
+        { id: "rest-missing-permission-callback", severity: "warning", file: rel, line: call.line, message: "register_rest_route() without a permission_callback (WordPress raises _doing_it_wrong and the route is effectively public)." },
+        call.sourceLine
+      );
+    }
+  }
+
+  for (const call of findCalls(text, "add_action|add_filter")) {
+    const hook = literalValue(call.args[0]);
+    if (hook === null) continue;
+
+    if (hook.startsWith("wp_ajax_nopriv_")) {
+      report.add(
+        { id: "ajax-nopriv-handler", severity: "info", file: rel, line: call.line, message: `Public AJAX handler "${hook}": treat input as attacker-controlled, rate limit, and never return private data.` },
+        call.sourceLine
+      );
+    }
+    if (REQUEST_HOOKS.has(hook) && /\bflush_rewrite_rules\s*\(/.test(call.argsText)) {
+      report.add(
+        { id: "rewrite-flush-on-request", severity: "warning", file: rel, line: call.line, message: `flush_rewrite_rules() runs on "${hook}" (every request); flush only on activation/deactivation or a one-time upgrade step.` },
+        call.sourceLine
+      );
+    }
+    if (["plugins_loaded", "after_setup_theme", "muplugins_loaded"].includes(hook) && /load_plugin_textdomain|textdomain/i.test(call.argsText)) {
+      report.add(
+        { id: "i18n-textdomain-before-init", severity: "warning", file: rel, line: call.line, message: `Text domain loaded on "${hook}"; since WP 6.7 load translations on init or later (WordPress.org plugins don't need load_plugin_textdomain()).` },
+        call.sourceLine
+      );
+    }
+  }
+
+  for (const call of findCalls(text, "add_option|update_option")) {
+    const autoloadArg = call.name === "add_option" ? call.args[3] : call.args[2];
+    if (autoloadArg && /^(true|['"](yes|on)['"])$/i.test(autoloadArg.trim())) {
+      report.add(
+        { id: "option-forced-autoload", severity: "info", file: rel, line: call.line, message: `${call.name}() forces autoload; only do this for small values needed on most requests (use false or null otherwise).` },
+        call.sourceLine
+      );
+    }
+  }
+
+  if (/\$_FILES\b/.test(text) && !/\b(wp_handle_upload|media_handle_upload|wp_handle_sideload|media_handle_sideload)\s*\(/.test(text)) {
+    const line = lineNumberAt(text, text.search(/\$_FILES\b/));
+    report.add({ id: "upload-without-wp-handler", severity: "warning", file: rel, line, message: "$_FILES used without wp_handle_upload()/media_handle_upload(); uploads need WordPress type checks and storage." });
+  }
+  for (const call of findCalls(text, "move_uploaded_file")) {
+    report.add({ id: "upload-move-uploaded-file", severity: "warning", file: rel, line: call.line, message: "move_uploaded_file() bypasses WordPress upload validation; use wp_handle_upload()." }, call.sourceLine);
+  }
+}
+
 function checkLines(text, rel, report, fileFacts) {
   const lines = text.split(/\r?\n/);
   const superglobal = /\$_(POST|GET|REQUEST|COOKIE|FILES)\b|\$_SERVER\s*\[/;
@@ -501,9 +578,18 @@ function checkLines(text, rel, report, fileFacts) {
 
 function main() {
   const argv = process.argv.slice(2);
-  const strict = argv.includes("--strict");
-  const dirArg = argv.find((a) => !a.startsWith("--"));
-  const pluginDir = path.resolve(dirArg || process.cwd());
+  const opts = { strict: false, format: "json", uriPrefix: "", dir: null };
+  for (let i = 0; i < argv.length; i += 1) {
+    if (argv[i] === "--strict") opts.strict = true;
+    else if (argv[i] === "--format") opts.format = argv[++i];
+    else if (argv[i] === "--uri-prefix") opts.uriPrefix = argv[++i] ?? "";
+    else if (!argv[i].startsWith("--")) opts.dir = argv[i];
+  }
+  if (!["json", "sarif"].includes(opts.format)) {
+    process.stderr.write(`Unknown --format "${opts.format}" (json or sarif).\n`);
+    process.exit(2);
+  }
+  const pluginDir = path.resolve(opts.dir || process.cwd());
 
   if (!statSafe(pluginDir)?.isDirectory()) {
     process.stderr.write(`Not a directory: ${pluginDir}\n`);
@@ -548,6 +634,7 @@ function main() {
     const facts = { readsInput: false, verifiesNonce: false, registersLifecycle: false, registersUninstall: false };
     checkLines(text, rel, reporter, facts);
     checkTextDomains(text, rel, expectedDomain, reporter, domainCounts);
+    checkCalls(text, rel, reporter);
 
     if (facts.registersLifecycle && !isMain) {
       reporter.add({ id: "lifecycle-hook-outside-main", severity: "info", file: rel, line: 1, message: "Activation/deactivation hook registered outside the main file; make sure it passes the main file path, not __FILE__ of this file." });
@@ -565,9 +652,9 @@ function main() {
   const { findings, summary, collapsed, suppressed, dropped } = reporter.result();
 
   const report = {
-    tool: { name: "check_plugin_basics", version: "0.1.0" },
+    tool: { name: "check_plugin_basics", version: "0.2.0" },
     pluginDir,
-    mainFile: mainFile ? path.relative(pluginDir, mainFile.file) : null,
+    mainFile: mainFile ? toPosix(path.relative(pluginDir, mainFile.file)) : null,
     header: mainFile ? mainFile.header : null,
     readme,
     textDomains: domainCounts,
@@ -581,8 +668,50 @@ function main() {
     findings,
   };
 
-  process.stdout.write(`${JSON.stringify(report, null, 2)}\n`);
-  if (strict && summary.error > 0) process.exit(1);
+  const output = opts.format === "sarif" ? toSarif(report, opts.uriPrefix) : report;
+  process.stdout.write(`${JSON.stringify(output, null, 2)}\n`);
+  if (opts.strict && summary.error > 0) process.exit(1);
+}
+
+// SARIF 2.1.0 for GitHub code scanning. `uriPrefix` maps plugin-relative paths to repo-relative ones.
+function toSarif(report, uriPrefix) {
+  const prefix = uriPrefix && !uriPrefix.endsWith("/") ? `${uriPrefix}/` : uriPrefix;
+  const level = { error: "error", warning: "warning", info: "note" };
+  const rules = new Map();
+  for (const f of report.findings) {
+    if (!rules.has(f.id)) {
+      rules.set(f.id, { id: f.id, shortDescription: { text: f.message }, defaultConfiguration: { level: level[f.severity] } });
+    }
+  }
+  return {
+    $schema: "https://json.schemastore.org/sarif-2.1.0.json",
+    version: "2.1.0",
+    runs: [
+      {
+        tool: {
+          driver: {
+            name: report.tool.name,
+            version: report.tool.version,
+            informationUri: "https://github.com/mkarim1378/wp-plugin-development-skill",
+            rules: [...rules.values()],
+          },
+        },
+        results: report.findings.map((f) => ({
+          ruleId: f.id,
+          level: level[f.severity],
+          message: { text: f.message },
+          locations: [
+            {
+              physicalLocation: {
+                artifactLocation: { uri: `${prefix}${f.file === "." ? report.mainFile ?? "" : f.file}` },
+                region: { startLine: Math.max(1, f.line || 1) },
+              },
+            },
+          ],
+        })),
+      },
+    ],
+  };
 }
 
 main();

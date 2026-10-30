@@ -34,6 +34,10 @@ Paths of the form `skills/<name>/...` are relative to the directory these skills
 2. `node skills/wp-plugin-development/scripts/detect_plugins.mjs` — locate plugin main files and headers.
 3. In a full-site repo, pick the plugin under `wp-content/plugins/` or `wp-content/mu-plugins/` before editing.
 4. Follow the repo's existing conventions (coding standard, autoloader, build tool, test runner) over the defaults in this skill.
+5. For a brand-new plugin, generate it instead of writing files by hand:
+   - `node skills/wp-plugin-development/scripts/scaffold_plugin.mjs --slug <slug> --name "<Name>" --dest <dir>`
+   - Feature overlays: `--woocommerce`, `--commercial`, `--elementor` (combinable). Run with `--dry-run` first and show the file list.
+   - The output passes `check_plugin_basics`, PHP lint, and WPCS out of the box; keep it that way as you add code.
 
 ### 1) Route the task
 
@@ -98,7 +102,7 @@ Run the deterministic basics check on the plugin directory and fix or justify ea
 
 - `node skills/wp-plugin-development/scripts/check_plugin_basics.mjs <plugin-dir>`
 
-It is heuristic (it flags unprepared SQL, raw superglobals, unescaped echoes, missing ABSPATH guards, header/readme mismatches, text domain drift). A clean report is not a security review; read `references/security.md` for anything that handles input.
+It is heuristic (it flags unprepared SQL, raw superglobals, unescaped echoes, missing ABSPATH guards, REST routes without `permission_callback`, public AJAX handlers, rewrite flushes on every request, early text domain loading, forced autoload, unsafe uploads, header/readme mismatches, text domain drift). Read each flagged line before calling it a bug. `--format sarif` produces GitHub code scanning output; `--strict` exits 1 on errors. A clean report is not a security review; read `references/security.md` for anything that handles input.
 
 ## Verification
 

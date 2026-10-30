@@ -66,6 +66,30 @@ test("CRLF files: prepared query variables are recognized", () => {
   assert.equal(report.summary.error, 0);
 });
 
+test("call-level rules: REST, AJAX, rewrites, textdomain, autoload, uploads", () => {
+  const { report } = run(fixture("rules-plugin"));
+  assert.deepEqual(ids(report).sort(), [
+    "ajax-nopriv-handler@rules-plugin.php:36",
+    "i18n-textdomain-before-init@rules-plugin.php:46",
+    "option-forced-autoload@rules-plugin.php:53",
+    "rest-missing-permission-callback@rules-plugin.php:16",
+    "rewrite-flush-on-request@rules-plugin.php:38",
+    "upload-move-uploaded-file@rules-plugin.php:59",
+    "upload-without-wp-handler@rules-plugin.php:58",
+  ]);
+});
+
+test("--format sarif emits SARIF 2.1.0 with prefixed URIs", () => {
+  const { report: sarif } = run(fixture("rules-plugin"), "--format", "sarif", "--uri-prefix", "plugins/rules");
+  assert.equal(sarif.version, "2.1.0");
+  const results = sarif.runs[0].results;
+  assert.equal(results.length, 7);
+  assert.ok(results.every((r) => r.locations[0].physicalLocation.artifactLocation.uri.startsWith("plugins/rules/")));
+  assert.ok(results.every((r) => ["error", "warning", "note"].includes(r.level)));
+  const ruleIds = sarif.runs[0].tool.driver.rules.map((r) => r.id);
+  assert.ok(ruleIds.includes("rest-missing-permission-callback"));
+});
+
 test("non-directory argument exits with 2", () => {
   assert.equal(run(path.join(here, "does-not-exist")).status, 2);
 });

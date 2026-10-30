@@ -9,7 +9,7 @@
   },
   "scripts": {
     "validate": "node shared/scripts/validate-skills.mjs",
-    "test": "node --test tests/check_plugin_basics.test.mjs",
+    "test": "node --test \"tests/*.test.mjs\"",
     "check": "npm run validate && npm test",
     "install-skills": "node scripts/install.mjs",
     "upstream-diff": "node scripts/upstream-diff.mjs"
