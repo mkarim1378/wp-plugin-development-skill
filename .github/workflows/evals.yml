@@ -1,0 +1,51 @@
+name: Evals
+
+# Manual only: every run spends API credits. Requires the ANTHROPIC_API_KEY repository secret.
+on:
+  workflow_dispatch:
+    inputs:
+      skill:
+        description: "Only scenarios for this skill (empty = all)"
+        required: false
+        default: ""
+      model:
+        description: "Agent model"
+        required: false
+        default: "sonnet"
+      judge_model:
+        description: "Judge model"
+        required: false
+        default: "sonnet"
+      budget:
+        description: "Max USD per scenario (agent)"
+        required: false
+        default: "1"
+
+permissions:
+  contents: read
+
+jobs:
+  evals:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+      - run: npm install -g @anthropic-ai/claude-code
+      - name: Run evals
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          args="--model ${{ inputs.model }} --judge-model ${{ inputs.judge_model }} --budget ${{ inputs.budget }} --out eval/results"
+          if [ -n "${{ inputs.skill }}" ]; then args="$args --skill ${{ inputs.skill }}"; fi
+          node scripts/run-evals.mjs $args
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eval-results
+          path: eval/results

@@ -12,6 +12,7 @@
     "test": "node --test \"tests/*.test.mjs\"",
     "check": "npm run validate && npm test",
     "install-skills": "node scripts/install.mjs",
-    "upstream-diff": "node scripts/upstream-diff.mjs"
+    "upstream-diff": "node scripts/upstream-diff.mjs",
+    "evals": "node scripts/run-evals.mjs"
   }
 }

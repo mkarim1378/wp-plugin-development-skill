@@ -47,7 +47,7 @@ New skill `skills/wp-woocommerce-extension/`.
 
 ## Phase 6 — Automated eval runner
 
-- [ ] `scripts/run-evals.mjs`: runs each scenario in `eval/scenarios/` against a disposable fixture repo with `claude -p` (headless), captures the transcript, and grades it against `success_criteria` with a judge prompt.
-- [ ] JSON + Markdown report, filter by skill, cost/time limits.
-- [ ] Baseline run over all skills; fix the gaps it finds in every phase above.
-- [ ] Document the workflow in README; optional manual CI job.
+- [x] `scripts/run-evals.mjs`: runs each scenario in `eval/scenarios/` against a disposable fixture repo with `claude -p` (headless), captures the transcript, and grades it against `success_criteria` with a judge prompt.
+- [x] JSON + Markdown report, filter by skill, cost/time limits.
+- [ ] Baseline run over all skills; fix the gaps it finds in every phase above. (Pending: needs an authenticated `claude` CLI or `ANTHROPIC_API_KEY`; run `node scripts/run-evals.mjs` or the manual Evals workflow.)
+- [x] Document the workflow in README; optional manual CI job.

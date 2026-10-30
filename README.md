@@ -100,9 +100,22 @@ It prints a JSON report (`--format sarif` for GitHub code scanning, `--strict` e
 npm run validate      # skill frontmatter + triage contract
 npm test              # check_plugin_basics and scaffold tests
 npm run upstream-diff # compare bundled skills with WordPress/agent-skills trunk
+npm run evals -- --dry-run  # automated eval runner (see below)
 ```
 
-Eval scenarios live in `eval/scenarios/`. Each describes a prompt, the expected procedure, and success criteria; run them manually with your assistant when changing a skill.
+Eval scenarios live in `eval/scenarios/`. Each describes a prompt, the expected procedure, and success criteria.
+
+### Running evals
+
+`scripts/run-evals.mjs` runs each scenario with Claude Code in headless mode (`claude -p`) inside a fresh temp workspace (a scaffolded or fixture plugin plus all skills in `.claude/skills`), then asks a judge model to grade the transcript and diff against the scenario's criteria. Requires an authenticated `claude` CLI; every run costs API usage.
+
+```bash
+node scripts/run-evals.mjs --dry-run                       # list scenarios and the maximum spend
+node scripts/run-evals.mjs --scenario plugin-add-settings-page --model sonnet
+node scripts/run-evals.mjs --skill wp-woocommerce-extension --budget 1 --min-score 0.8
+```
+
+Reports land in `eval/results/<timestamp>/` (`report.md`, `report.json`, transcripts, diffs). The manual `Evals` GitHub workflow runs the same thing with the `ANTHROPIC_API_KEY` secret.
 
 ## Credits and license
 
