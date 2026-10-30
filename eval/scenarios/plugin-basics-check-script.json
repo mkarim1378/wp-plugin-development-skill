@@ -1,0 +1,18 @@
+{
+  "name": "Run the plugin basics self-check",
+  "skills": [
+    "wp-plugin-development"
+  ],
+  "query": "Quickly check my plugin for obvious problems before I send it for review.",
+  "expected_behavior": [
+    "Step 1: Run node skills/wp-plugin-development/scripts/check_plugin_basics.mjs <plugin-dir>",
+    "Step 2: Group findings by severity and explain each error",
+    "Step 3: Inspect flagged lines before calling them vulnerabilities (the script is heuristic)",
+    "Step 4: Recommend PHPCS with WPCS and Plugin Check for a full review"
+  ],
+  "success_criteria": [
+    "Report JSON is parsed, not guessed",
+    "False positives are identified as such after reading the code",
+    "Does not present a clean script report as a security review"
+  ]
+}

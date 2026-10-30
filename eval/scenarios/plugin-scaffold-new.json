@@ -1,0 +1,25 @@
+{
+  "name": "Scaffold a new distributable plugin",
+  "skills": [
+    "wp-project-triage",
+    "wp-plugin-development"
+  ],
+  "query": "Create a new plugin called Acme Reviews that will be published on WordPress.org. Set up the main file, structure, and uninstall cleanup.",
+  "expected_behavior": [
+    "Step 1: Run wp-project-triage to confirm the repo is empty or a plugin repo",
+    "Step 2: Load references/headers-and-bootstrap.md and references/structure.md",
+    "Step 3: Write a main file with a full header (Version, Requires at least 7.0, Requires PHP 7.4, License GPL-2.0-or-later, Text Domain equal to the slug)",
+    "Step 4: Guard every non-entry PHP file with defined( 'ABSPATH' ) || exit",
+    "Step 5: Register activation/deactivation hooks at top level of the main file",
+    "Step 6: Add uninstall.php that checks WP_UNINSTALL_PLUGIN",
+    "Step 7: Add readme.txt whose Stable tag matches Version",
+    "Step 8: Run scripts/check_plugin_basics.mjs and address findings"
+  ],
+  "success_criteria": [
+    "Text Domain equals the plugin directory slug",
+    "All globals, options, and hooks use a unique prefix or namespace",
+    "No work runs at file load other than defining constants, autoloading, and adding hooks",
+    "readme.txt and header agree on Version/Stable tag, Requires at least, and Requires PHP",
+    "check_plugin_basics reports no errors"
+  ]
+}

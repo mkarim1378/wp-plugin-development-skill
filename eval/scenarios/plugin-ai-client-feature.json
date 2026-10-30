@@ -1,0 +1,23 @@
+{
+  "name": "Add an AI summary feature with the WordPress AI Client",
+  "skills": [
+    "wp-plugin-development",
+    "wp-rest-api"
+  ],
+  "query": "Add a button in the editor sidebar that generates a two-sentence summary of the post using WordPress 7.0's AI features and saves it to post meta.",
+  "expected_behavior": [
+    "Step 1: Load references/wp-7-features.md (AI Client section)",
+    "Step 2: Guard with function_exists( 'wp_ai_client_prompt' ) and hide the UI when is_supported_for_text_generation() is false",
+    "Step 3: Expose the feature through a REST route whose permission_callback checks current_user_can( 'edit_post', $id ) (hand off to wp-rest-api)",
+    "Step 4: Run generation on explicit user action, not on save_post",
+    "Step 5: Handle WP_Error results, sanitize the output before saving, and register the meta with show_in_rest and auth_callback",
+    "Step 6: Leave provider and API key configuration to Settings > Connectors"
+  ],
+  "success_criteria": [
+    "No AI call happens on save_post or page load",
+    "Plugin does not ask for or store AI provider API keys",
+    "Model output is sanitized before storage and escaped on output",
+    "Feature degrades gracefully on WordPress < 7.0 or without a configured provider",
+    "Does not claim real-time collaboration support"
+  ]
+}

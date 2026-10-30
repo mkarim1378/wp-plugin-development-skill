@@ -1,0 +1,20 @@
+{
+  "name": "Register a server-rendered block without JavaScript",
+  "skills": [
+    "wp-plugin-development"
+  ],
+  "query": "Add a simple 'Average rating' block to the plugin. We don't have a JS build and don't want one.",
+  "expected_behavior": [
+    "Step 1: Load references/wp-7-features.md (PHP-only blocks)",
+    "Step 2: Register the block on init with register_block_type(), a render_callback, and supports.autoRegister = true",
+    "Step 3: Use only string/number/integer/boolean attributes so controls are generated",
+    "Step 4: Escape output in the render callback and use get_block_wrapper_attributes()",
+    "Step 5: Note the WP 7.0 requirement (Requires at least) or guard for older versions"
+  ],
+  "success_criteria": [
+    "No JavaScript build is introduced",
+    "Block uses autoRegister with a render_callback",
+    "Render output is escaped",
+    "Hands off to wp-block-development if inner blocks or media controls are needed"
+  ]
+}

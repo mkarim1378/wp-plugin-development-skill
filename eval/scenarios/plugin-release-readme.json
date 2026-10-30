@@ -1,0 +1,22 @@
+{
+  "name": "Prepare a WordPress.org release",
+  "skills": [
+    "wp-plugin-development",
+    "wp-plugin-directory-guidelines"
+  ],
+  "query": "Release version 1.2.0 of our plugin to WordPress.org.",
+  "expected_behavior": [
+    "Step 1: Load references/release.md",
+    "Step 2: Bump Version in the header, the version constant, package.json, and Stable tag in readme.txt",
+    "Step 3: Update Tested up to and the changelog",
+    "Step 4: Build the zip without dev files (.distignore or package.json files) and with production Composer dependencies",
+    "Step 5: Run Plugin Check against the built plugin (wp-plugin-directory-guidelines)",
+    "Step 6: Describe the SVN trunk/tags deploy or the 10up deploy action"
+  ],
+  "success_criteria": [
+    "Header Version and readme Stable tag match",
+    "Zip excludes tests, node_modules, and dev configs, and includes vendor/autoload.php and build assets",
+    "Plugin Check runs on what ships, not on the source tree",
+    "External services are documented in readme.txt if the plugin calls any"
+  ]
+}

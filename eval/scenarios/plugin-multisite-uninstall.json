@@ -1,0 +1,19 @@
+{
+  "name": "Uninstall cleanup on multisite",
+  "skills": [
+    "wp-plugin-development"
+  ],
+  "query": "Our plugin can be network-activated. Make uninstall remove its options and custom table from every site.",
+  "expected_behavior": [
+    "Step 1: Load references/multisite.md and references/lifecycle.md",
+    "Step 2: Guard uninstall.php with WP_UNINSTALL_PLUGIN",
+    "Step 3: Iterate get_sites() with switch_to_blog()/restore_current_blog() and clean each site's options and $wpdb->prefix table",
+    "Step 4: Delete network options with delete_site_option()",
+    "Step 5: Handle sites created after network activation (wp_initialize_site) and deleted sites (wp_uninitialize_site)"
+  ],
+  "success_criteria": [
+    "Every switch_to_blog() has a matching restore_current_blog()",
+    "Per-site and network data are both removed",
+    "Only data the plugin created is deleted"
+  ]
+}

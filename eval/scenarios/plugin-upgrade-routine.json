@@ -1,0 +1,20 @@
+{
+  "name": "Add a column to a custom table in an update",
+  "skills": [
+    "wp-plugin-development"
+  ],
+  "query": "Our plugin creates a custom table on activation. Version 1.3 needs a new 'status' column. Make sure existing sites get it after updating.",
+  "expected_behavior": [
+    "Step 1: Load references/lifecycle.md and references/data-and-cron.md",
+    "Step 2: Explain that the activation hook does not run on plugin updates",
+    "Step 3: Add a DB version constant and a version-checked upgrade routine on plugins_loaded",
+    "Step 4: Use dbDelta() with its formatting rules (one column per line, two spaces after PRIMARY KEY, KEY not INDEX)",
+    "Step 5: Make the migration idempotent and store the new DB version without autoload"
+  ],
+  "success_criteria": [
+    "Does not rely on register_activation_hook for the migration",
+    "Upgrade routine compares the stored DB version with the code's DB version",
+    "dbDelta schema follows its formatting rules",
+    "Fresh installs and upgraded installs end with the same schema"
+  ]
+}

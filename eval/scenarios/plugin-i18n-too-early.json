@@ -1,0 +1,18 @@
+{
+  "name": "Fix translation loaded too early notice",
+  "skills": [
+    "wp-plugin-development"
+  ],
+  "query": "After updating WordPress we get 'Translation loading for the acme-reviews domain was triggered too early'. Fix it.",
+  "expected_behavior": [
+    "Step 1: Load references/i18n.md",
+    "Step 2: Find translation calls that run before init (constructors on plugins_loaded, constants, property defaults, top-level code)",
+    "Step 3: Move those calls to init or later, or make the strings lazy",
+    "Step 4: Remove load_plugin_textdomain() if the plugin is hosted on WordPress.org, or move it to init otherwise"
+  ],
+  "success_criteria": [
+    "No translation function runs before init",
+    "Text domain stays a string literal equal to the slug",
+    "The _doing_it_wrong notice is gone with WP_DEBUG on"
+  ]
+}
