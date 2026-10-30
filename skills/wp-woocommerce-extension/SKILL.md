@@ -34,7 +34,7 @@ Use together with `wp-plugin-development` (security, lifecycle, i18n, release). 
 | Anything touching orders (meta, queries, admin columns/meta boxes, import/export) | `references/hpos-and-orders.md` |
 | Product fields, product types, cart item prices, tiered/dynamic pricing | `references/products-and-pricing.md` |
 | Cart/Checkout blocks, checkout fields, Store API, block payment UI | `references/blocks-checkout.md` |
-| Payment gateways, callbacks, refunds | `references/payment-gateways.md` (Iranian gateways: also `wp-persian-localization`) |
+| Payment gateways, callbacks, refunds | `references/payment-gateways.md` (Iranian gateways, Rial/Toman: also `wp-persian-localization` `references/iranian-gateways.md`) |
 | Settings tabs, emails, admin notices in WooCommerce screens | `references/settings-and-emails.md` |
 | Background jobs, logging | `references/action-scheduler-and-logging.md` |
 | WooCommerce REST API (wc/v3), extending responses | `references/rest-api.md` |

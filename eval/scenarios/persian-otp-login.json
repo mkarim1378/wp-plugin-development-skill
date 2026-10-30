@@ -1,0 +1,20 @@
+{
+  "name": "Mobile OTP login",
+  "skills": [
+    "wp-persian-localization",
+    "wp-plugin-development"
+  ],
+  "query": "Add login with mobile number and SMS code using Kavenegar.",
+  "expected_behavior": [
+    "Step 1: Load references/sms-and-otp.md and iranian-validation.md",
+    "Step 2: Define an SMS provider interface and a Kavenegar implementation using pattern/lookup sending",
+    "Step 3: Generate codes with random_int(), hash them, expire in minutes, single use, capped attempts",
+    "Step 4: Rate-limit per mobile and per IP; same response for unknown numbers",
+    "Step 5: Log in with wp_set_auth_cookie() after verification"
+  ],
+  "success_criteria": [
+    "OTP is never stored in plain text",
+    "SMS pumping is limited",
+    "Persian digits in the code input are accepted"
+  ]
+}

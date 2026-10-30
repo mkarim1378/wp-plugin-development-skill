@@ -1,0 +1,22 @@
+{
+  "name": "Zarinpal gateway for WooCommerce",
+  "skills": [
+    "wp-persian-localization",
+    "wp-woocommerce-extension"
+  ],
+  "query": "Build a Zarinpal payment gateway for our WooCommerce store. The store currency is Toman.",
+  "expected_behavior": [
+    "Step 1: Load wp-woocommerce-extension payment-gateways.md and blocks-checkout.md",
+    "Step 2: Load wp-persian-localization iranian-gateways.md",
+    "Step 3: Convert Toman to Rial in one function and store the requested amount on the order",
+    "Step 4: Redirect to StartPay with the authority; on callback ignore NOK, compare Authority with the stored value, verify with the stored amount",
+    "Step 5: Treat verify codes 100 and 101 as paid but complete once; handle late success for cancelled orders",
+    "Step 6: Add a Checkout block payment integration"
+  ],
+  "success_criteria": [
+    "Verify uses the stored Rial amount",
+    "Duplicate callbacks complete the order once",
+    "No secrets or full card numbers are logged",
+    "Gateway hidden for currencies other than IRR/IRT"
+  ]
+}

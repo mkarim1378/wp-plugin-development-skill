@@ -15,6 +15,7 @@ Skills other than `wp-plugin-development` are kept as close to upstream as possi
 | --- | --- |
 | `skills/wp-plugin-development/**` | Locally developed hub: rewritten `SKILL.md`, expanded references, 12 new references, `scripts/check_plugin_basics.mjs`. Upstream changes to this skill must be merged by hand. |
 | `skills/wp-woocommerce-extension/**` | New local skill (not in upstream). |
+| `skills/wp-persian-localization/**` | New local skill (not in upstream). |
 | `skills/wordpress-router/references/decision-tree.md` | WooCommerce route added. Routes for build tooling, testing, and security point to `wp-plugin-development` references instead of planned skills; `blueprint` and `wp-block-themes` marked as not bundled. |
 | `eval/scenarios/plugin-*.json` (8 files: scaffold, upgrade routine, i18n, AI Client, PHP-only block, release, multisite uninstall, basics check) | New scenarios for the hub skill. |
 

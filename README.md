@@ -12,6 +12,7 @@ Targets **WordPress 7.0+ / PHP 7.4+**, with notes on WordPress 7.1 changes.
 | --- | --- |
 | **wp-plugin-development** | Hub: headers/bootstrap, architecture and prefixing, hooks, lifecycle and upgrade routines, admin UI, Settings API, assets and script modules, CPTs/meta, options/transients/custom tables/cron, HTTP API, i18n/RTL, multisite, privacy, security, WP 7.x features (AI Client, PHP-only blocks, DataViews, iframed editor), WP-CLI commands, testing, release packaging |
 | **wp-woocommerce-extension** | WooCommerce: HPOS/order CRUD, products and tiered pricing, Cart/Checkout blocks, payment gateways, settings/emails, Action Scheduler, REST, testing |
+| **wp-persian-localization** | Persian/Iranian market: Jalali dates, digit normalization, RTL and local fonts, fa_IR translations, Iranian identifiers, Zarinpal-style gateways, SMS/OTP; tested PHP helper class |
 | wp-project-triage | Deterministic repo inspection (project kind, tooling, versions) |
 | wordpress-router | Classifies a repo and routes to the right skill |
 | wp-rest-api | REST routes, controllers, schema, permissions |

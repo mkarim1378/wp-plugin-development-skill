@@ -1,0 +1,20 @@
+{
+  "name": "Jalali delivery date field",
+  "skills": [
+    "wp-persian-localization",
+    "wp-woocommerce-extension"
+  ],
+  "query": "Add a delivery date field to checkout. Customers enter it in Shamsi (Jalali) and admins see it in Shamsi too.",
+  "expected_behavior": [
+    "Step 1: Load references/jalali-dates.md and copy assets/class-persian.php",
+    "Step 2: Normalize digits with to_latin_digits() before parsing",
+    "Step 3: Convert Jalali input to Gregorian, validate with checkdate(), and store a timestamp in the site timezone",
+    "Step 4: Display with format_jalali( $ts, ..., wp_timezone() )",
+    "Step 5: Register the field with the Additional Checkout Fields API for the Checkout block"
+  ],
+  "success_criteria": [
+    "Stored value is Gregorian/UTC, not a Jalali string",
+    "Persian and Arabic digits are accepted",
+    "Dates around Nowruz and Esfand 30 are handled"
+  ]
+}

@@ -28,10 +28,10 @@ New skill `skills/wp-woocommerce-extension/`.
 
 ## Phase 3 — Persian localization and Iranian market
 
-- [ ] New skill `skills/wp-persian-localization/`: Jalali dates (storage stays Gregorian/UTC, display converts), Persian/Arabic digit normalization on input, RTL admin and frontend, `fa_IR` translation workflow, Persian fonts loaded locally, Iranian phone/national ID validation.
-- [ ] WooCommerce reference for Iranian gateways (Zarinpal, IDPay, and similar): request → redirect → verify flow, server-side amount verification, Rial/Toman conversion, duplicate/late callbacks, user returning without paying, logging without leaking tokens.
-- [ ] Reference for Iranian SMS providers: provider abstraction, OTP rate limiting and expiry, queueing sends.
-- [ ] Eval scenarios for each.
+- [x] New skill `skills/wp-persian-localization/`: Jalali dates (storage stays Gregorian/UTC, display converts), Persian/Arabic digit normalization on input, RTL admin and frontend, `fa_IR` translation workflow, Persian fonts loaded locally, Iranian phone/national ID validation.
+- [x] WooCommerce reference for Iranian gateways (Zarinpal, IDPay, and similar): request → redirect → verify flow, server-side amount verification, Rial/Toman conversion, duplicate/late callbacks, user returning without paying, logging without leaking tokens.
+- [x] Reference for Iranian SMS providers: provider abstraction, OTP rate limiting and expiry, queueing sends.
+- [x] Eval scenarios for each.
 
 ## Phase 4 — Commercial plugins: licensing and private updates
 

@@ -39,6 +39,8 @@ Route by intent even if repo kind is broad (like `wp-site`):
   - Route → `wp-block-themes` (not bundled in this skill pack; install it from WordPress/agent-skills if needed).
 - **WooCommerce / orders / HPOS / products / cart / checkout / payment gateway / WC_Order**
   - Route → `wp-woocommerce-extension` (plus `wp-plugin-development` for general plugin guardrails).
+- **Persian / fa_IR / Jalali / Shamsi / Iranian gateway (Zarinpal) / Iranian SMS / OTP / RTL Persian**
+  - Route → `wp-persian-localization`.
 - **Plugins / hooks / activation hook / uninstall / Settings API / admin pages**
   - Route → `wp-plugin-development`.
 - **REST endpoint / register_rest_route / permission_callback**
